@@ -1,0 +1,60 @@
+// @mui
+import Divider from '@mui/material/Divider';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+
+// @project
+import RouterLink from '@/components/Link';
+import { SocialTypes } from '@/enum';
+import AuthRegister from '@/views/auth/register/AuthRegister';
+import AuthSocial from '@/views/auth/AuthSocial';
+
+/***************************  AUTH - REGISTER  ***************************/
+
+export default function Register() {
+  return (
+    <Box sx={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box
+        sx={{
+          border: '1px solid #ddd',
+          borderRadius: '8px',
+          width: 'fit-content',
+          padding: "24px"
+        }}
+      >
+        <Stack sx={{ height: 1, alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+          <Box sx={{ width: 1, maxWidth: 458 }}>
+            <Stack sx={{ gap: { xs: 1, sm: 1.5 }, textAlign: 'center', mb: { xs: 2, sm: 4 } }}>
+              <Typography variant="h1">Sign Up</Typography>
+
+            </Stack>
+
+            {/* Social login buttons */}
+            {/* <AuthSocial type={SocialTypes.HORIZONTAL} /> */}
+
+            {/* <Divider sx={{ my: { xs: 4, sm: 5 } }}>
+          <Typography variant="body2" color="text.secondary">
+            or continue with email
+          </Typography>
+        </Divider> */}
+
+            {/* Login form */}
+            <AuthRegister />
+
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: { xs: 2, sm: 3 } }}>
+                Already have an account?{' '}
+                <Link component={RouterLink} underline="hover" variant="subtitle2" to="/login" sx={{ '&:hover': { color: 'primary.dark' } }}>
+                  Login
+                </Link>
+              </Typography>
+            </Box>
+          </Box>
+
+        </Stack>
+      </Box>
+    </Box>
+  );
+}
