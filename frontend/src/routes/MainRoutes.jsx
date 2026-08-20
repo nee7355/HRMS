@@ -25,7 +25,7 @@ const SettingsPage = Loadable(lazy(() => import('@/views/admin/settings')));
 const DepartmentPage = Loadable(lazy(() => import('@/views/admin/department')));
 const ReportsPage = Loadable(lazy(() => import('@/views/admin/reports')));
 // const DepartmentPage = Loadable(lazy(() => import('@/views/admin/departments')));
-const EmployeesPage = Loadable(lazy(() => import('@/views/admin/employees')));
+const EmployeesPage = Loadable(lazy(() => import('@/views/common/employees')));
 const LoginPage = Loadable(lazy(()=>import('../views/auth/login')));
 const RegisterPage = Loadable(lazy(()=>import('../views/auth/register')));
 

@@ -50,6 +50,7 @@ export default function AuthRegister({ inputSx }) {
     watch,
     control,
     setValue,
+    setError,
     formState: { errors }
   } = useForm({ defaultValues: { dialcode: '+91' } });
 
@@ -71,7 +72,22 @@ export default function AuthRegister({ inputSx }) {
         router.push('/login');
       }
     } catch (error) {
-       console.error(error);
+      const data = error.response?.data;
+      
+      if(data.errors){
+        Object.entries(data.errors).forEach(([field, message])=>{
+          setError(field, {
+            type: 'server',
+            message
+          });
+        })
+      }else{
+        const messaage = error.response?.data.message || "Something went wrong";
+        
+       enqueueSnackbar(messaage, {variant: 'warning'});
+      }
+       
+      // console.error(error);
     }finally{
       setIsProcessing(false);
     }

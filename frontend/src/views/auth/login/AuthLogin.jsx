@@ -58,6 +58,7 @@ export default function AuthLogin({ inputSx }) {
     watch,
     handleSubmit,
     reset,
+    setError,
     formState: { errors }
   } = useForm({ defaultValues: { email: 'admin@gmail.com', password: 'Admin@123' } });
 
@@ -67,12 +68,28 @@ export default function AuthLogin({ inputSx }) {
   const onSubmit = async(formData) => {
     try {
       setIsProcessing(true);
-      setLoginError('');
       const res = await handleLogin(formData);
       enqueueSnackbar("Login Successfully")
+      setLoginError('');
       router.push(APP_DEFAULT_PATH);
     } catch (error) {
-        console.error(`login filed: ${error}`)
+      const data = error.response?.data;
+      if(data.errors){
+         Object.entries(data.errors).forEach(([field, message])=>{
+          setError(field,{
+            type: 'server',
+            message
+          })
+         })
+      }else{
+      console.error("Login failed:", error);
+
+      const message =
+        error.response?.data?.message || "Something went wrong";
+
+      setLoginError(message);
+      enqueueSnackbar(message, {variant: "error"});
+      }
     }finally{
       setIsProcessing(false)
     }
@@ -153,11 +170,11 @@ export default function AuthLogin({ inputSx }) {
             Login
           </Button>
 
-          {loginError && (
+          {/* {loginError && (
             <Alert sx={{ mt: 2 }} severity="error" variant="filled" icon={false}>
               {loginError}
             </Alert>
-          )}
+          )} */}
         </Box>
       </form>
     </>

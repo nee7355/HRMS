@@ -15,6 +15,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import Loader from '@/components/Loader';
 
 import { DRAWER_WIDTH } from '@/config';
+import { useMemo } from 'react';
+import { usePathname, useRouter } from '../../utils/navigation';
 
 /***************************  ADMIN LAYOUT  ***************************/
 
@@ -22,19 +24,33 @@ export default function Layout() {
   const { menuMasterLoading } = useGetMenuMaster();
 
   const downXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
+  const currentPath = usePathname();
+  const router = useRouter();
+console.log(currentPath)
+  const dashboardHeader = useMemo(()=>{
+    if(currentPath === '/dashboard') return <Header/>
+    return <></>
+  },[currentPath])
 
+  useEffect(()=>{
+    if(currentPath==='/'){
+      router.push('/dashboard')
+    }
+  },[currentPath]);
   useEffect(() => {
     handlerDrawerOpen(!downXL);
   }, [downXL]);
+
 
   if (menuMasterLoading) return <Loader />;
 
   return (
     <Stack direction="row" sx={{ width: 1 }}>
-      <Header />
+      {/* <Header /> */}
+      {dashboardHeader}
       <Drawer />
       <Box component="main" sx={{ width: `calc(100% - ${DRAWER_WIDTH}px)`, flexGrow: 1, p: { xs: 2, sm: 3 } }}>
-        <Toolbar sx={{ minHeight: { xs: 54, sm: 46, md: 76 } }} />
+        {currentPath === '/dashboard'&&<Toolbar sx={{ minHeight: { xs: 54, sm: 46, md: 76 } }} />}
         <Box
           sx={{
             py: 0.4,
