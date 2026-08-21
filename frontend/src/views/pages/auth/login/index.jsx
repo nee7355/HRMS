@@ -7,8 +7,8 @@ import Box from '@mui/material/Box';
 
 // @project
 import RouterLink from '@/components/Link';
-import AuthLogin from '@/views/auth/login/AuthLogin';
-import AuthSocial from '@/views/auth/AuthSocial';
+import AuthLogin from '@/views/pages/auth/login/AuthLogin';
+// import AuthSocial from '@/views/pages/auth/AuthSocial';
 // import Copyright from '@/components/Copyright';
 
 /***************************  AUTH - LOGIN  ***************************/
@@ -45,7 +45,7 @@ export default function Login() {
             {/* Login form */}
             <AuthLogin />
            
-              <Typography variant="body2" color="text.secondary" sx={{ mt: { xs: 2, sm: 3 }, textAlign:'center' }}>
+              {/* <Typography variant="body2" color="text.secondary" sx={{ mt: { xs: 2, sm: 3 }, textAlign:'center' }}>
                 Don’t have an account?{' '}
                 <Link
                   component={RouterLink}
@@ -56,7 +56,7 @@ export default function Login() {
                 >
                   Register
                 </Link>
-              </Typography>
+              </Typography> */}
            
           </Box>
 

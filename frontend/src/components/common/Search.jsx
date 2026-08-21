@@ -20,12 +20,15 @@ const Search = (props) => {
         {/* <InputLabel htmlFor={`search-input`}>Search</InputLabel> */}
         <OutlinedInput
             // id='search-input'
+            value={searchText}
+            onChange={(e)=>setSearchText(e.target.value)}
             type='text'
             startAdornment={
                 <InputAdornment position='start'>
                     <IconSearch/>
                 </InputAdornment>
             }
+
         
         />
       </FormControl>

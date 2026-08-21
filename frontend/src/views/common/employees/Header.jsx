@@ -1,6 +1,6 @@
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import React from 'react'
+import React, { useState } from 'react'
 import Search from '../../../components/common/Search'
 import { useMemo } from 'react'
 import { usePathname } from '../../../utils/navigation'
@@ -10,8 +10,11 @@ import { handlerDrawerOpen, useGetMenuMaster } from '@/services/states/menu';
 import { DRAWER_WIDTH } from '@/config';
 import Button from '@mui/material/Button'
 import { IconPlus } from '@tabler/icons-react'
+import AddEditUserModel from '../../components/modals/AddEditUserModel'
 
-const Header = ({}) => {
+const Header = ({searchText, setSearchText}) => {
+    const[openUserModal, setOpenUserModal] = useState();
+
     const currentPath = usePathname();
     const theme = useTheme();
       const { menuMaster } = useGetMenuMaster();
@@ -40,10 +43,18 @@ const Header = ({}) => {
         <Typography sx={{fontWeight:'bold', fontSize:'22px'}}>{title}</Typography>
 
         <Stack direction={'row'} spacing={2}>
-            <Search  />
-            <Button color='primary' variant='contained' size='small' startIcon={<IconPlus fontSize={'16px'}/>}>Add Employee</Button>
+            <Search  searchText={searchText} setSearchText={setSearchText}/>
+            <Button 
+                color='primary' 
+                variant='contained' 
+                size='small' 
+                startIcon={<IconPlus fontSize={'16px'}/>}
+                onClick={()=>setOpenUserModal(true)}
+                >Add Employee</Button>
         </Stack>
     </Stack>
+
+    {openUserModal&&<AddEditUserModel open={openUserModal} handleClose={()=>setOpenUserModal(false)}/>}
     </Box>
   )
 }

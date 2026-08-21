@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -23,17 +23,19 @@ import { emailSchema, passwordSchema, firstNameSchema, lastNameSchema } from '@/
 // @icons
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import Box from '@mui/material/Box';
-import { salarySchema } from '../../../utils/validation-schema/common';
+import { salarySchema } from '@/utils/validation-schema/common';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { handleRegister } from '../../../services/auth/auth';
+import { handleRegister } from '@/services/auth/auth';
 import { useSnackbar } from 'notistack';
+import { handleUserAction } from '../../../../store/slices/userSlice';
+import { useDispatch } from 'react-redux';
 
 // @types
 
 /***************************  AUTH - REGISTER  ***************************/
 
-export default function AuthRegister({ inputSx }) {
+export default function AuthRegister({ data, inputSx, action="add", handleClose }) {
   const router = useRouter();
 
   const theme = useTheme();
@@ -43,6 +45,7 @@ export default function AuthRegister({ inputSx }) {
   const [registerError, setRegisterError] = useState('');
 
    const { enqueueSnackbar } = useSnackbar();
+   const dispatch = useDispatch();
   // Initialize react-hook-form
   const {
     register,
@@ -58,6 +61,16 @@ export default function AuthRegister({ inputSx }) {
   password.current = watch('password', '');
 
   // Handle form submission
+  console.log("data", data);
+  useEffect(()=>{
+    if(!data) return;
+      Object.entries(data).forEach(([key, value])=>{
+        setValue(key, value,{
+          shouldDirty: true,
+          shouldValidate: true
+        })
+      })
+  },[data, setValue]);
   
   const onSubmit = async(formData) => {
 
@@ -65,12 +78,13 @@ export default function AuthRegister({ inputSx }) {
       console.log(formData)
       setIsProcessing(true);
       setRegisterError('');
-      const res = await handleRegister(formData);
-      
-      if(res.status>=200&& res.status<=300){
-        enqueueSnackbar("Registration Successfull");
-        router.push('/login');
-      }
+      // const res = await handleRegister(formData, action);
+      dispatch(handleUserAction(formData, action));
+      // if(res.status>=200&& res.status<=300){
+      //   enqueueSnackbar("User Added Successfully");
+      //   // router.push('/login');
+      // }
+      handleClose()
     } catch (error) {
       const data = error.response?.data;
       
@@ -79,7 +93,7 @@ export default function AuthRegister({ inputSx }) {
           setError(field, {
             type: 'server',
             message
-          });
+          }); 
         })
       }else{
         const messaage = error.response?.data.message || "Something went wrong";
@@ -96,7 +110,7 @@ export default function AuthRegister({ inputSx }) {
   const onInvalid = (formErrors) => {
     console.log('Registration form is invalid', formErrors);
   };
-console.log("errors", errors)
+
 
   const commonIconProps = { size: 16, color: theme.vars.palette.grey[700] };
 
@@ -245,7 +259,7 @@ console.log("errors", errors)
           {errors.role?.message && <FormHelperText error>{errors.role?.message}</FormHelperText>}
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6 }}>
+       {action==='add' &&<><Grid size={{ xs: 12, sm: 6 }}>
           <InputLabel>Password</InputLabel>
           <OutlinedInput
             {...register('password', passwordSchema)}
@@ -279,7 +293,7 @@ console.log("errors", errors)
             sx={inputSx}
           />
           {errors.confirmPassword?.message && <FormHelperText error>{errors.confirmPassword?.message}</FormHelperText>}
-        </Grid>
+        </Grid></>}
       </Grid>
       <Box sx={{ textAlign: 'center' }}>
         <Button
@@ -291,7 +305,8 @@ console.log("errors", errors)
           sx={{ minWidth: 120, mt: { xs: 2, sm: 4 }, '& .MuiButton-endIcon': { ml: 1 } }}
             // onClick={handleClick}
         >
-          Sign Up
+          {/* Sign Up */}
+          Save
         </Button>
         {registerError && (
           <Alert sx={{ mt: 2 }} severity="error" variant="filled" icon={false}>

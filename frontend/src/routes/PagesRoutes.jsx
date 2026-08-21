@@ -6,8 +6,8 @@ import Loadable from '@/components/Loadable';
 import AuthLayout from '@/layouts/AuthLayout';
 
 // auth
-const LoginPage = Loadable(lazy(() => import('@/views/auth/login')));
-const RegisterPage = Loadable(lazy(() => import('@/views/auth/register')));
+const LoginPage = Loadable(lazy(() => import('@/views/pages/auth/login')));
+const RegisterPage = Loadable(lazy(() => import('@/views/pages/auth/register')));
 
 /***************************  PAGES ROUTES  ***************************/
 

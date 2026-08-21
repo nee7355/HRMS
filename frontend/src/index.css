@@ -2,3 +2,24 @@
 * {
   -webkit-tap-highlight-color: transparent;
 }
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+p, td, label, span{
+  font-size: 14px !important;
+}
+
+.custom-table tr td {
+  padding: 8px;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  
+}
+
+.custom-table tr th {
+  padding: 8px;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;    
+  font-weight: bold;
+}

@@ -25,7 +25,7 @@ import { emailSchema, passwordSchema } from '@/utils/validation-schema/common';
 
 // @icons
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
-import { handleLogin } from '../../../services/auth/auth';
+import { handleLogin } from '@/services/auth/auth';
 import { useSnackbar } from 'notistack';
 
 // Mock user credentials

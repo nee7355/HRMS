@@ -83,10 +83,10 @@ export const userLoginController = async (req, res) => {
             success: false,
             message: "Invalid Email or Password"
         });
-        
-      const role = await Role.find({_id: user._id});
-    //   console.log("role", role)
-        const userData = { 
+
+        const role = await Role.find({ _id: user._id });
+        //   console.log("role", role)
+        const userData = {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
@@ -96,7 +96,7 @@ export const userLoginController = async (req, res) => {
             country: user.country,
             address: user.address,
             role: role.name,
-         };
+        };
         delete userData.password;
         console.log("userData", userData);
         const token = await generateToken(userData);
@@ -104,16 +104,16 @@ export const userLoginController = async (req, res) => {
         if (token.success) return res.status(200).json({
             success: true,
             message: "Login Successfull",
-            data:{
+            data: {
                 user: userData,
                 token
             }
-            
+
         });
 
         console.error(token);
 
-        return res.status(500).json({message: "Internal server erroor", success: false});
+        return res.status(500).json({ message: "Internal server erroor", success: false });
 
     } catch (error) {
         console.log(`login api failed: `, error);
@@ -124,3 +124,56 @@ export const userLoginController = async (req, res) => {
         });
     }
 }
+
+export const usersController = async (req, res) => {
+    try {
+        const users = await User.find({});
+        return res.status(200).json({
+            success: true,
+            data: users
+        })
+    } catch (error) {
+        console.error(`Error in get User api: ${error}`);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error"
+        })
+    }
+}
+
+export const editUserController = async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (!id) return res.status(401).json({
+            success: false,
+            message: "Invalid User"
+        })
+
+        const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true
+        });
+        if (!updatedUser) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "User  updated successfully"
+        })
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server error"
+        })
+    }
+
+}
+
+export const deleteUserController = async (req, res) => { }
