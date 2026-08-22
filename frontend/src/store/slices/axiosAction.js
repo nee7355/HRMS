@@ -21,8 +21,8 @@ api.interceptors.request.use(
 )
 
 
-export const getAxios = async(url)=>{
-    return await api.get(url);
+export const getAxios = async(url, params)=>{
+    return await api.get(url, params);
 }
 export const postAxios = async(url, data)=>{
     return await api.post(url, data);

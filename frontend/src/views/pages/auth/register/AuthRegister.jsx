@@ -60,8 +60,7 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
   const password = useRef({});
   password.current = watch('password', '');
 
-  // Handle form submission
-  console.log("data", data);
+// console.log("errors........", errors)
   useEffect(()=>{
     if(!data) return;
       Object.entries(data).forEach(([key, value])=>{
@@ -71,23 +70,24 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
         })
       })
   },[data, setValue]);
-  
+
   const onSubmit = async(formData) => {
 
     try {
-      console.log(formData)
+      
       setIsProcessing(true);
       setRegisterError('');
-      // const res = await handleRegister(formData, action);
-      dispatch(handleUserAction(formData, action));
-      // if(res.status>=200&& res.status<=300){
-      //   enqueueSnackbar("User Added Successfully");
-      //   // router.push('/login');
-      // }
-      handleClose()
-    } catch (error) {
-      const data = error.response?.data;
       
+      if(Object.keys(errors).length===0){
+       const res = await dispatch(handleUserAction(formData, action));
+       
+       handleClose();
+      }
+      
+
+    } catch (error) {
+      
+      const data = error.response?.data;
       if(data.errors){
         Object.entries(data.errors).forEach(([field, message])=>{
           setError(field, {
@@ -102,6 +102,8 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
       }
        
       // console.error(error);
+      // handleClose();
+
     }finally{
       setIsProcessing(false);
     }

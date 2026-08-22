@@ -26,7 +26,7 @@ export default function Layout() {
   const downXL = useMediaQuery((theme) => theme.breakpoints.down('xl'));
   const currentPath = usePathname();
   const router = useRouter();
-console.log(currentPath)
+
   const dashboardHeader = useMemo(()=>{
     if(currentPath === '/dashboard') return <Header/>
     return <></>

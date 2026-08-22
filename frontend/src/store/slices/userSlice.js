@@ -14,7 +14,11 @@ export const userSlice = createSlice({
             state.loading = true;
         },
         getUsers:(state, {payload})=>{
-            state.users = payload.data
+            const dt = {...payload};
+            Object.keys(payload).forEach((key)=>{
+                state[key] = payload[key];
+
+            })
         },
         getUsersLoadingFailure: (state)=>{
             state.loading = false;
@@ -58,19 +62,27 @@ export function handleUserAction(data, action) {
                 default:
                     console.error('Invalid action:', action);
             }
+            
+            // return res?.success
 
         } catch (error) {
             console.error(error);
             dispatch(getUsersLoadingFailure());
+            // const data = error?.response?.data;
+
+            throw error;
         }
     };
 }
-export function getUsersData(){
+export function getUsersData(page, itemPerPage, searchText){
     return async(dispatch)=>{
         dispatch(getUsersLoading());
         try {
-            const res = await getAxios('/users');
-            dispatch(getUsers(res.data));
+            const res = await getAxios(`/users`, {
+                params: {page, limit: itemPerPage, search: searchText}
+            });
+            
+            dispatch(getUsers(res.data.data));
         } catch (error) {
             dispatch(getUsersLoadingFailure());
         }

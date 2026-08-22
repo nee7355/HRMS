@@ -97,6 +97,18 @@ export default function typography() {
     // button
     button: {
       textTransform: 'capitalize'
-    }
+    },
+    p:{
+      fontSize:14
+    },
+    td:{
+      fontSize:14
+    },
+    th:{
+      fontSize:14
+    },
+    span:{
+      fontSize:14
+    },
   };
 }

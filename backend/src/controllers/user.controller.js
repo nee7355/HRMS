@@ -127,10 +127,86 @@ export const userLoginController = async (req, res) => {
 
 export const usersController = async (req, res) => {
     try {
-        const users = await User.find({});
+        let {
+            page,
+            limit,
+            search=""
+        } = req.query;
+
+        page = parseInt(page || 1);
+        limit = parseInt(limit || 50);
+        search = search.trim();
+
+        const filter = {};
+        
+        if(search){
+            filter.$or = [
+                {
+                    firstName:{
+                        $regex: search,
+                        $options: 'i'
+                    }
+                },
+                {
+                    lastName:{
+                        $regex: search,
+                        $options: 'i'
+                    }
+                },
+                {
+                    email:{
+                        $regex: search,
+                        $options: 'i'
+                    }
+                },
+                {
+                    phone:{
+                        $regex: search,
+                        $options: 'i'
+                    }
+                },
+                // {
+                //     salary:{
+                //         $regex: search,
+                //         $options: 'i'
+                //     }
+                // },
+                {
+                    state:{
+                        $regex: search,
+                        $options: 'i'
+                    }
+                },
+                {
+                    address:{
+                        $regex: search,
+                        $options: 'i'
+                    }
+                },
+                // {
+                //     role:{
+                //         $regex: search,
+                //         $options: 'i'
+                //     }
+                // },
+            ]
+        }
+        
+        const skip = (page - 1) * limit;
+
+        const users = await User.find(filter).skip(skip).limit(limit);
+
+        const totalUsers = await User.countDocuments(filter);
+        const totalPages = Math.ceil(totalUsers/limit);
+
         return res.status(200).json({
             success: true,
-            data: users
+            data: {
+                users,
+                totalPages,
+                totalUsers,
+                currentPage: page
+            }
         })
     } catch (error) {
         console.error(`Error in get User api: ${error}`);
@@ -151,7 +227,7 @@ export const editUserController = async (req, res) => {
         })
 
         const updatedUser = await User.findByIdAndUpdate(id, req.body, {
-            new: true,
+            // new: true,
             runValidators: true
         });
         if (!updatedUser) {
@@ -166,11 +242,24 @@ export const editUserController = async (req, res) => {
         })
 
     } catch (error) {
-        console.error(error);
+        if (error.name === "ValidationError") {
+            const errors = {};
+            Object.keys(error.errors).forEach((field) => {
+                errors[field] = error.errors[field].message
+            });
+
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                errors,
+            })
+        }
+
+        console.error("Add User Error:", error);
 
         return res.status(500).json({
             success: false,
-            message: "Internal Server error"
+            message: "Internal Server Error"
         })
     }
 

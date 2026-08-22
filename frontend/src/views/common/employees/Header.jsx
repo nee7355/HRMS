@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import React, { useState } from 'react'
-import Search from '../../../components/common/Search'
+import Search from '../../components/Search'
 import { useMemo } from 'react'
 import { usePathname } from '../../../utils/navigation'
 import { useTheme } from '@mui/material/styles'
