@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { lazy } from 'react'
+import DepartmentComponent from '../../common/department'
+
+
 
 const Department = () => {
   return (
-    <div>Department</div>
+    <DepartmentComponent/>
   )
 }
 

@@ -1,13 +1,13 @@
 import Role from "../models/Role.js";
-import User from "../models/User.js";
+import Employee from "../models/Employee.js";
 import { comparePassword, generateToken } from "../services/auth.service.js";
 
-export const addUserController = async (req, res) => {
+export const addEmployeeController = async (req, res) => {
 
     try {
         const { firstName, lastName, dialCode, email, phone, salary, country, city, address, role, password } = req.body;
 
-        const isUserExist = await User.findOne({ email: email.trim().toLowerCase() });
+        const isUserExist = await Employee.findOne({ email: email.trim().toLowerCase() });
         if (isUserExist) return res.status(409).json({
             success: false,
             message: "User already exist"
@@ -25,7 +25,7 @@ export const addUserController = async (req, res) => {
             role: userRole._id
         };
 
-        const user = await User.create(data);
+        const user = await Employee.create(data);
 
         res.status(201).json({
             success: true,
@@ -70,7 +70,7 @@ export const userLoginController = async (req, res) => {
             message: "Email and password is required",
         });
 
-        const user = await User.findOne({ email: email.trim().toLowerCase() }).select("+password");
+        const user = await Employee.findOne({ email: email.trim().toLowerCase() }).select("+password");
 
         if (!user) return res.status(400).json({
             success: false,
@@ -125,7 +125,7 @@ export const userLoginController = async (req, res) => {
     }
 }
 
-export const usersController = async (req, res) => {
+export const employeeController = async (req, res) => {
     try {
         let {
             page,
@@ -194,9 +194,9 @@ export const usersController = async (req, res) => {
         
         const skip = (page - 1) * limit;
 
-        const employees = await User.find(filter).populate('role', 'name').skip(skip).limit(limit);
+        const employees = await Employee.find(filter).populate('role', 'name').skip(skip).limit(limit);
 
-        const totalUsers = await User.countDocuments(filter);
+        const totalUsers = await Employee.countDocuments(filter);
         const totalPages = Math.ceil(totalUsers/limit);
 
         return res.status(200).json({
@@ -209,7 +209,7 @@ export const usersController = async (req, res) => {
             }
         })
     } catch (error) {
-        console.error(`Error in get User api: ${error}`);
+        console.error(`Error in get Employee api: ${error}`);
 
         return res.status(500).json({
             success: false,
@@ -218,7 +218,7 @@ export const usersController = async (req, res) => {
     }
 }
 
-export const editUserController = async (req, res) => {
+export const editEmployeeController = async (req, res) => {
     try {
         const id = req.params.id;
         if (!id) return res.status(401).json({
@@ -236,7 +236,7 @@ export const editUserController = async (req, res) => {
         console.log("role.........", role)
         console.log("userInput.........", userInput);
 
-        const updatedUser = await User.findByIdAndUpdate(id, userInput, {
+        const updatedUser = await Employee.findByIdAndUpdate(id, userInput, {
             // new: true,
             runValidators: true
         });
@@ -275,11 +275,11 @@ export const editUserController = async (req, res) => {
 
 }
 
-export const deleteUserController = async (req, res) => { 
+export const deleteEmployeeController = async (req, res) => { 
     try {
         const {id} = req.params;
         if(id){
-            const user = await User.findByIdAndDelete(id);
+            const user = await Employee.findByIdAndDelete(id);
             console.log('deleted user', user)
             return res.status(200).json({
                 success:true,

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { hashPassword } from "../services/auth.service.js";
 
-const userSchema = mongoose.Schema({
+const employeeSchema = mongoose.Schema({
     firstName:{
         type: String,
         required: [true, "Name is required"],
@@ -60,14 +60,18 @@ const userSchema = mongoose.Schema({
         minlength: 5,
         select: false
 
+    },
+    userId: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 },{
     timestamps: true,
 });
 
-userSchema.pre("save", async function(){
+employeeSchema.pre("save", async function(){
     if(!this.isModified("password")) return;
     this.password = await hashPassword(this.password);
 
 });
-export default mongoose.model("User", userSchema);
+export default mongoose.model("Employee", employeeSchema);

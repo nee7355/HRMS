@@ -3,7 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import userRoutes from "./routes/user.routes.js"
+import userRoutes from "./routes/userRoutes.js"
+import departmentrRoutes from "./routes/departmentRoutes.js"
 
 const app = express();
 
@@ -30,7 +31,8 @@ app.get("/api/v1/health", (req, res)=>{
     }
 })
 
-app.use("/api/v1/employees", userRoutes)
+app.use("/api/v1/employees", userRoutes);
+app.use("/api/v1/department", departmentrRoutes);
 
 
 export default app;
