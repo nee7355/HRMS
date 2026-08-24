@@ -3,14 +3,27 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 // @project
-import menuItems from '@/menu';
+// import menuItems from '@/menu';
 import NavGroup from './NavGroup';
 import NavItem from './NavItem';
+import { useMemo } from 'react';
+import { getUser } from '../../../../../services/auth/auth';
+import menuList from '../../../../../menu/sidebarMenu';
 
 /***************************  DRAWER CONTENT - RESPONSIVE DRAWER  ***************************/
 
 export default function ResponsiveDrawer() {
-  const navGroups = menuItems.items.map((item, index) => {
+  const user = getUser();
+
+  const menus = useMemo(()=>{
+      const menu = menuList[user.role.toLowerCase()]
+      
+      return {
+        items: [...menu]
+      }
+  },[user])
+
+  const navGroups = menus.items.map((item, index) => {
   
     switch (item.type) {
       case 'group':

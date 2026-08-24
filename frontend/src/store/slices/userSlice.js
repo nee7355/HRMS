@@ -4,10 +4,10 @@ import { enqueueSnackbar } from "notistack";
 
 const initialState = {
     loading:false,
-    users:[]
+    employees:[]
 }
 export const userSlice = createSlice({
-    name:'users',
+    name:'employees',
     initialState,
     reducers:{
         getUsersLoading:(state)=>{
@@ -27,7 +27,7 @@ export const userSlice = createSlice({
 });
 
 export const {getUsersLoading, getUsers, getUsersLoadingFailure} = userSlice.actions;
-export const userSelector = (state) => state.users;
+export const userSelector = (state) => state.employees;
 export default userSlice.reducer;
 
 
@@ -39,13 +39,13 @@ export function handleUserAction(data, action) {
 
             switch (action) {
                 case 'add': {
-                    const res = await postAxios('/users/addUser', data);
+                    const res = await postAxios('/employees/addEmployee', data);
                     enqueueSnackbar(res.data.message);
                     break;
                 }
 
                 case 'edit': {
-                    const res = await putAxios(`/users/editUser/${_id}`, data);
+                    const res = await putAxios(`/employees/editEmployee/${_id}`, data);
                     if(res.status>=200&&res.status<300){
                         dispatch(getUsersData());
                     }
@@ -54,7 +54,7 @@ export function handleUserAction(data, action) {
                 }
 
                 case 'delete': {
-                    const res = await deleteAxios(`/users/delete/${_id}`);
+                    const res = await deleteAxios(`/employees/deleteEmployee/${_id}`);
                     enqueueSnackbar(res.data.message);
                     break;
                 }
@@ -63,6 +63,7 @@ export function handleUserAction(data, action) {
                     console.error('Invalid action:', action);
             }
             
+            dispatch(getUsersData())
             // return res?.success
 
         } catch (error) {
@@ -78,7 +79,7 @@ export function getUsersData(page, itemPerPage, searchText){
     return async(dispatch)=>{
         dispatch(getUsersLoading());
         try {
-            const res = await getAxios(`/users`, {
+            const res = await getAxios(`/employees`, {
                 params: {page, limit: itemPerPage, search: searchText}
             });
             

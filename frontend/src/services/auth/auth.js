@@ -3,20 +3,21 @@ import { axiosPost } from "../api/axios"
 
 export const handleRegister = async(data)=>{
    
-    const res = await axiosPost('/users/addUser', data);
+    const res = await axiosPost('/employees/addEmployee', data);
 
     return res;
     
 }
 export const handleLogin = async(data)=>{
    
-    const res = await axiosPost('/users/login', data);
+    const res = await axiosPost('/employees/login', data);
     
     if(res.status===200){
         const{token, user} = res.data.data
+        
         localStorage.setItem("token", token.token);
-        localStorage.setItem("user", user);
-
+        
+        localStorage.setItem("user", JSON.stringify(user));
     }
 
     return res;

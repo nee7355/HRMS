@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import React, { useMemo, useState } from 'react'
+import { getNestedValue } from './utils/fn';
 
 
 /**
@@ -56,14 +57,18 @@ const CustomTale = ({
                           {column.map((cell) => <th>{cell.header}</th>)}
                       </tr>
                   </thead>
-                  <tbody>
-                      {
-                          data.map((row) =>
-                              <tr>
-                                  {column.map(col => <td>{col.Cell ? col.Cell(row) : row[col.key]}</td>)}
-                              </tr>
-                          )}
-                  </tbody>
+                      <tbody>
+                          {
+                              data.map((row) =>
+                                  <tr>
+                                      {column.map(col => {
+                                        
+                                       const value = getNestedValue(row, col.key);
+                                          return <td>{col.Cell ? col.Cell(row) : value}</td>
+                                      })}
+                                  </tr>
+                              )}
+                      </tbody>
               </table>
             </Box>
               {enablePagination && <Box>

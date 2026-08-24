@@ -11,20 +11,12 @@ import ProtectedRoute from './ProtectedRoute';
 // Dashboard
 const DashboardPage = Loadable(lazy(() => import('@/views/pages/admin/dashboard')));
 
-// Utils
-const ColorPage = Loadable(lazy(() => import('@/views/components/utils/colors')));
-const ShadowPage = Loadable(lazy(() => import('@/views/components/utils/shadow')));
-const TypographyPage = Loadable(lazy(() => import('@/views/components/utils/typography')));
-
-// Sample Page
-const SamplePage = Loadable(lazy(() => import('@/views/pages/admin/sample-page')));
 const AttendancePage = Loadable(lazy(() => import('@/views/pages/admin/attendance')));
 const PayrollPage = Loadable(lazy(() => import('@/views/pages/admin/payroll')));
 const LeavePage = Loadable(lazy(() => import('@/views/pages/admin/leave')));
 const SettingsPage = Loadable(lazy(() => import('@/views/pages/admin/settings')));
 const DepartmentPage = Loadable(lazy(() => import('@/views/pages/admin/department')));
 const ReportsPage = Loadable(lazy(() => import('@/views/pages/admin/reports')));
-// const DepartmentPage = Loadable(lazy(() => import('@/views/pages/admin/departments')));
 const EmployeesPage = Loadable(lazy(() => import('@/views/common/employees')));
 const LoginPage = Loadable(lazy(()=>import('@/views/pages/auth/login')));
 const RegisterPage = Loadable(lazy(()=>import('@/views/pages/auth/register')));

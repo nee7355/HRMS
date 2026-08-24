@@ -61,10 +61,15 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
   password.current = watch('password', '');
 
 // console.log("errors........", errors)
+console.log("user data", data)
   useEffect(()=>{
     if(!data) return;
       Object.entries(data).forEach(([key, value])=>{
-        setValue(key, value,{
+        const fieldValue = key === 'role' && value && typeof value === 'object'
+          ? value.name
+          : value;
+
+        setValue(key, fieldValue,{
           shouldDirty: true,
           shouldValidate: true
         })
@@ -78,11 +83,11 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
       setIsProcessing(true);
       setRegisterError('');
       
-      if(Object.keys(errors).length===0){
+      // if(Object.keys(errors).length===0){
        const res = await dispatch(handleUserAction(formData, action));
        
        handleClose();
-      }
+      // }
       
 
     } catch (error) {

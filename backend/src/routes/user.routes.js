@@ -5,9 +5,9 @@ const router = express.Router();
 
 //user crud api
 router.get("/", usersController);
-router.post("/addUser", addUserController);
-router.put("/editUser/:id", editUserController);
-router.delete("/delete/:id", deleteUserController);
+router.post("/addEmployee", addUserController);
+router.put("/editEmployee/:id", editUserController);
+router.delete("/deleteEmployee/:id", deleteUserController);
 
 
 //user  login api

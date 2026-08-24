@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -32,17 +32,13 @@ import useConfig from '@/hooks/useConfig';
 import { IconChevronRight, IconLanguage, IconLogout, IconSettings, IconTextDirectionLtr } from '@tabler/icons-react';
 
 import profile from '@/assets/images/users/avatar-1.png';
-import { logout } from '../../../../services/auth/auth';
+import { getUser, logout } from '../../../../services/auth/auth';
 import { Router } from 'react-router-dom';
 import { useRouter } from '../../../../utils/navigation';
 
 /***************************  HEADER - PROFILE DATA  ***************************/
 
-const profileData = {
-  avatar: { src: profile, size: AvatarSize.XS },
-  title: 'Neeraj Chaursiya',
-  caption: 'Super Admin'
-};
+
 
 const languageList = [
   { key: ThemeI18n.EN, value: 'English' },
@@ -61,6 +57,13 @@ export default function ProfileSection() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [innerAnchorEl, setInnerAnchorEl] = useState(null);
+
+  const user = useMemo(()=>getUser(),[])
+  const profileData = {
+    avatar: { src: profile, size: AvatarSize.XS },
+    title: user?.firstName || "Neeraj",
+    caption: user?.email || "abc@gmail.com"
+  };
 
   const open = Boolean(anchorEl);
   const innerOpen = Boolean(innerAnchorEl);

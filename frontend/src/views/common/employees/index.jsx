@@ -17,7 +17,7 @@ const itemPerPage = 50;
 const Employee = () => {
   const[openAddEditModal, SetOpenAddEditModal] = useState(false);
   const[userData, setUserData] = useState({});
-  const {users, totalPages, totalUsers} = useSelector(userSelector);
+  const {employees, totalPages, totalUsers} = useSelector(userSelector);
   const[openUserProfile, setOpenUserProfile] = useState(false);
   const[searchText, setSearchText] = useState('');
   const [page, setPge] = useState(1);
@@ -71,6 +71,11 @@ const handleUserProfile = (user)=>{
     },
     {
       id:5,
+      header: 'Role',
+      key: 'role.name'
+    },
+    {
+      id:5,
       header: 'Action',
       Cell: (row)=><Box>
         <IconButton onClick={()=>handleUserProfile(row)} sx={{width: '18px', height: '18px', padding: 0, marginRight: 1}}>
@@ -79,7 +84,7 @@ const handleUserProfile = (user)=>{
         <IconButton onClick={()=>handleEdit(row)} sx={{width: '18px', height: '18px', padding: 0, marginRight: 1}}>
           <IconEdit/>
           </IconButton>
-        <IconButton onClick={handleDelete} sx={{width: '18px', height: '18px', padding: 0, marginRight: 1}}>
+        <IconButton onClick={()=>handleDelete(row)} sx={{width: '18px', height: '18px', padding: 0, marginRight: 1}}>
           <IconTrash color='red'/>
         </IconButton>
       </Box>
@@ -94,7 +99,7 @@ const handleUserProfile = (user)=>{
         {/* <h1>filter</h1> */}
         <CustomTale
           column={column}
-          data={users}
+          data={employees}
           enablePagination= {true}
           page = {page}
           setPage = {setPge}

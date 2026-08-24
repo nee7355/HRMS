@@ -84,8 +84,8 @@ export const userLoginController = async (req, res) => {
             message: "Invalid Email or Password"
         });
 
-        const role = await Role.find({ _id: user._id });
-        //   console.log("role", role)
+        const role = await Role.find({ _id: user.role });
+       
         const userData = {
             firstName: user.firstName,
             lastName: user.lastName,
@@ -95,10 +95,10 @@ export const userLoginController = async (req, res) => {
             salary: user.salary,
             country: user.country,
             address: user.address,
-            role: role.name,
+            role: role[0].name,
         };
         delete userData.password;
-        console.log("userData", userData);
+        // console.log("userData", userData);
         const token = await generateToken(userData);
 
         if (token.success) return res.status(200).json({
@@ -194,7 +194,7 @@ export const usersController = async (req, res) => {
         
         const skip = (page - 1) * limit;
 
-        const users = await User.find(filter).skip(skip).limit(limit);
+        const employees = await User.find(filter).populate('role', 'name').skip(skip).limit(limit);
 
         const totalUsers = await User.countDocuments(filter);
         const totalPages = Math.ceil(totalUsers/limit);
@@ -202,7 +202,7 @@ export const usersController = async (req, res) => {
         return res.status(200).json({
             success: true,
             data: {
-                users,
+                employees,
                 totalPages,
                 totalUsers,
                 currentPage: page
@@ -226,7 +226,17 @@ export const editUserController = async (req, res) => {
             message: "Invalid User"
         })
 
-        const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+        ;
+        const role = await Role.find({name: req.body.role});
+        const userInput = {
+            ...req.body,
+            role: role[0]._id
+        }
+
+        console.log("role.........", role)
+        console.log("userInput.........", userInput);
+
+        const updatedUser = await User.findByIdAndUpdate(id, userInput, {
             // new: true,
             runValidators: true
         });
@@ -265,4 +275,22 @@ export const editUserController = async (req, res) => {
 
 }
 
-export const deleteUserController = async (req, res) => { }
+export const deleteUserController = async (req, res) => { 
+    try {
+        const {id} = req.params;
+        if(id){
+            const user = await User.findByIdAndDelete(id);
+            console.log('deleted user', user)
+            return res.status(200).json({
+                success:true,
+                message: "User Deleted Successfully"
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+                success:false,
+                message: "Some thing went wrong"
+            })
+    }
+}

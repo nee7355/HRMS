@@ -30,7 +30,7 @@ app.get("/api/v1/health", (req, res)=>{
     }
 })
 
-app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/employees", userRoutes)
 
 
 export default app;

@@ -11,7 +11,7 @@ const loggerMiddler = (store)=>(next)=>(action)=>{
 }
 export const store = configureStore({
     reducer: {
-        users: userReducer
+        employees: userReducer
     },
     middleware:(getDefaultMiddleware)=>getDefaultMiddleware().concat(loggerMiddler),
 });

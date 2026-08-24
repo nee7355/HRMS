@@ -8,7 +8,10 @@ import AnalyticsTopRef from '@/sections/dashboard/AnalyticsTopRef';
 
 /***************************  ANALYTICS - OVERVIEW  ***************************/
 
-export default function AnalyticsOverview() {
+export default function Dashboard() {
+
+
+  console.log("admin dashboard is rendering now ................................")
   return (
     <Grid container spacing={{ xs: 2, md: 3 }}>
       <Grid size={12}>
