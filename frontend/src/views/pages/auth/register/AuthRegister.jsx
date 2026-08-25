@@ -61,7 +61,7 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
   password.current = watch('password', '');
 
 // console.log("errors........", errors)
-console.log("user data", data)
+
   useEffect(()=>{
     if(!data) return;
       Object.entries(data).forEach(([key, value])=>{

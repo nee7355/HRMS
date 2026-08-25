@@ -32,7 +32,7 @@ export const addDepartmentController = async(req, res)=>{
             const {name, description} = req.body;
 
         const department = await departments.findOne({name: name});
-        console.log('department', department);
+      
         if(department){
             return failed(res, 400, "Already exists")
         }
@@ -55,16 +55,30 @@ export const updateDepartmentController = async(req, res)=>{
             const id = req.params.id;
             const {name, description} = req.body;
 
-        const department = await departments.findById({_id: id});
+        const department = await departments.findById(id);
         
         if(!department){
             return failed(res, 400, "Not found");
         }
 
-       const updated =  await departments.updateOne({
-            name: name,
-            description: description
-        })
+        const exisitingDepartment = await departments.findOne({
+            name: name.trim(),
+            _id:{ $ne: id }
+        });
+
+        if(exisitingDepartment){
+            return failed(res, 400, "Department with this name is already exists")
+        }
+
+       const updated =  await departments.updateOne(
+           { _id: id },
+           {
+               $set: {
+                   name: name,
+                   description: description
+               }
+           }
+       )
         return success(res, 200, "Updated successfully", updated);
         
     } catch (error) {
@@ -78,7 +92,7 @@ export const deleteDepartmentController = async(req, res)=>{
             const id = req.params.id;
             
 
-        const department = await departments.findById({_id: id});
+        const department = await departments.findById(id);
         
         if(!department){
             return failed(res, 400, "Department not found");

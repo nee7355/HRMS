@@ -10,7 +10,7 @@ import uiElements from './ui-elements';
 let menus = [];
 const user = getUser();
 menus = menuList[user?.role.toLowerCase()];
-console.log("menussssssss", menus)
+// console.log("menussssssss", menus)
 const menuItems = {
   // items: [manage, uiElements, pages, other]
   items: [...menus]

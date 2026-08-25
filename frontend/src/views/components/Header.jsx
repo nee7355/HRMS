@@ -13,18 +13,18 @@ import { IconPlus } from '@tabler/icons-react'
 import AddEditUserModel from '@/views/components/modals/AddEditUserModel'
 import Toolbar from '@mui/material/Toolbar'
 
-const Header = ({searchText, setSearchText, action, setOpenModal}) => {
+const Header = ({ searchText, setSearchText, action }) => {
 
     const currentPath = usePathname();
     const theme = useTheme();
-      const { menuMaster } = useGetMenuMaster();
-      const drawerOpen = menuMaster.isDashboardDrawerOpened;
+    const { menuMaster } = useGetMenuMaster();
+    const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
-    const title = useMemo(()=>{
-        const path = currentPath.split("/").filter(item=>item)[0];
+    const title = useMemo(() => {
+        const path = currentPath.split("/").filter(item => item)[0];
         const formated = `${path.slice(0, 1).toUpperCase()}${path.slice(1).toLocaleLowerCase()}`
         return formated;
-    },[currentPath]);
+    }, [currentPath]);
     const style = {
         color: 'inherit',
         position: 'fixed',
@@ -32,25 +32,25 @@ const Header = ({searchText, setSearchText, action, setOpenModal}) => {
         sx: {
             borderBottom: `1px solid ${theme.vars.palette.grey[300]}`,
             zIndex: 1200,
-            width: { xs: '100%', lg: drawerOpen ? `calc(100% - ${DRAWER_WIDTH+80}px)` : 1 },
+            width: { xs: '100%', lg: drawerOpen ? `calc(100% - ${DRAWER_WIDTH + 80}px)` : 1 },
             paddingBottom: '24px'
         }
     };
-  return (
-<Box>
-    <Box {...style}>
-    <Stack direction={"row"} justifyContent={'space-between'} alignItems={'center'} >
-        <Typography sx={{fontWeight:'bold', fontSize:'22px'}}>{title}</Typography>
+    return (
+        <Box>
+            <Box {...style}>
+                <Stack direction={"row"} justifyContent={'space-between'} alignItems={'center'} >
+                    <Typography sx={{ fontWeight: 'bold', fontSize: '22px' }}>{title}</Typography>
 
-        <Stack direction={'row'} spacing={2}>
-            <Search  searchText={searchText} setSearchText={setSearchText}/>
-            {action}
-        </Stack>
-    </Stack>
-    </Box>
-<Toolbar sx={{ minHeight: { xs: 54, sm: 46, md: 76 } }} />
-    </Box>
-  )
+                    <Stack direction={'row'} spacing={2}>
+                        <Search searchText={searchText} setSearchText={setSearchText} />
+                        {action}
+                    </Stack>
+                </Stack>
+            </Box>
+            <Toolbar sx={{ minHeight: { xs: 54, sm: 46, md: 76 } }} />
+        </Box>
+    )
 }
 
 export default Header

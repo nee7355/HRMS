@@ -59,19 +59,19 @@ const CustomTale = ({
                   </thead>
                       <tbody>
                           {
-                              data.map((row) =>
+                              data.map((row, index) =>
                                   <tr>
                                       {column.map(col => {
                                         
                                        const value = getNestedValue(row, col.key);
-                                          return <td>{col.Cell ? col.Cell(row) : value}</td>
+                                          return <td>{col.Cell ? col.Cell(row, index) : value}</td>
                                       })}
                                   </tr>
                               )}
                       </tbody>
               </table>
             </Box>
-              {enablePagination && <Box>
+              {enablePagination && totalPages>1&& <Box>
                   <Pagination 
                     page={page}
                     count={totalPages} 
