@@ -11,6 +11,7 @@ import Department from '../views/pages/admin/department'
 import Box from '@mui/material/Box'
 import Team from '../views/pages/manager/team'
 import Performance from '../views/pages/manager/performance'
+import Designation from '../views/pages/admin/Designation'
 
 const AppRoutes = [
     {
@@ -62,6 +63,14 @@ const AppRoutes = [
                         element: (
                             <RoleRoute role={['ADMIN', 'HR']}>
                                 <Department/>
+                            </RoleRoute>
+                        )
+                    },
+                    {
+                        path: '/designation',
+                        element: (
+                            <RoleRoute role={['ADMIN']}>
+                                <Designation/>
                             </RoleRoute>
                         )
                     },

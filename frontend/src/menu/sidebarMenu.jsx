@@ -24,6 +24,13 @@ const menuList = {
       icon: 'IconBuilding'
     },
     {
+      id: 'designation',
+      title: 'Designation',
+      type: 'item',
+      url: '/designation',
+      icon: 'IconBuilding'
+    },
+    {
       id: 'attendance',
       title: 'Attendance',
       type: 'item',
