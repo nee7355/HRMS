@@ -24,14 +24,14 @@ import { AvatarSize } from '@/enum';
 // @assets
 import { IconCommand, IconSearch } from '@tabler/icons-react';
 
-import avatar1 from '@/assets/images/users/avatar-1.png';
-import avatar2 from '@/assets/images/users/avatar-2.png';
+// import avatar1 from '@/assets/images/users/avatar-1.png';
+// import avatar2 from '@/assets/images/users/avatar-2.png';
 
 /***************************  HEADER - SEARCH DATA  ***************************/
 
 const profileData = [
-  { alt: 'Aplican Warner', src: avatar1, title: 'Aplican Warner', subTitle: 'Admin' },
-  { alt: 'Apliaye Aweoa', src: avatar2, title: 'Apliaye Aweoa', subTitle: 'Admin' }
+  { alt: 'Aplican Warner', src: '', title: 'Aplican Warner', subTitle: 'Admin' },
+  { alt: 'Apliaye Aweoa', src: '', title: 'Apliaye Aweoa', subTitle: 'Admin' }
 ];
 
 const listCotent = [

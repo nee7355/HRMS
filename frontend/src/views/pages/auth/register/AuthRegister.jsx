@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -29,7 +29,9 @@ import MenuItem from '@mui/material/MenuItem';
 import { handleRegister } from '@/services/auth/auth';
 import { useSnackbar } from 'notistack';
 import { handleUserAction } from '../../../../store/slices/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { designationSelector, fetchDesignation } from '../../../../store/slices/designationSlice';
+import { deparmentSelector, fetchDepartments } from '../../../../store/slices/departmentSlice';
 
 // @types
 
@@ -43,6 +45,8 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [registerError, setRegisterError] = useState('');
+  const {departments} = useSelector(deparmentSelector)
+  const {designation} = useSelector(designationSelector)
 
    const { enqueueSnackbar } = useSnackbar();
    const dispatch = useDispatch();
@@ -54,13 +58,14 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
     control,
     setValue,
     setError,
+    getValues,
     formState: { errors }
   } = useForm({ defaultValues: { dialcode: '+91' } });
 
   const password = useRef({});
   password.current = watch('password', '');
-
-// console.log("errors........", errors)
+  const selectedDepartment = watch('department', '');
+  const selectedDesignation = watch('designation', '');
 
   useEffect(()=>{
     if(!data) return;
@@ -114,12 +119,36 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
     }
   };
 
+  // console.log('formstate', formState)
   const onInvalid = (formErrors) => {
     console.log('Registration form is invalid', formErrors);
   };
 
-
+useEffect(()=>{
+  dispatch(fetchDesignation());
+  dispatch(fetchDepartments());
+},[])
   const commonIconProps = { size: 16, color: theme.vars.palette.grey[700] };
+
+  const designationlist = useMemo(() => {
+    if (!designation?.length || !selectedDepartment) return [];
+
+    return designation.filter((item) => {
+      const departmentName = typeof item.departmentId === 'object' ? item.departmentId?.name : item.departmentId;
+      return departmentName === selectedDepartment;
+    });
+  }, [designation, selectedDepartment]);
+
+  useEffect(() => {
+    if (!selectedDepartment) {
+      setValue('designation', '');
+      return;
+    }
+
+    if (selectedDesignation && !designationlist.some((item) => item.name === selectedDesignation)) {
+      setValue('designation', '');
+    }
+  }, [selectedDepartment, selectedDesignation, designationlist, setValue]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onInvalid)} autoComplete="off">
@@ -246,24 +275,52 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
               </Select>
             )}
           />
-          {/* <Select
-          {...register('role')}
-            labelId='role'
-            value={"USER"}
-            // label = "role"
-            onChange={()=>{}}
-            sx={{
-              width: '100%'
-            }}
-            
-          >
-            <MenuItem value="">--Select User--</MenuItem>
-            <MenuItem value="ADMIN">ADMIN</MenuItem>
-            <MenuItem value="HR">HR</MenuItem>
-            <MenuItem value="MANAGER">MANAGER</MenuItem>
-            <MenuItem value="USER">USER</MenuItem>
-          </Select> */}
+          
           {errors.role?.message && <FormHelperText error>{errors.role?.message}</FormHelperText>}
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <InputLabel id="department">Department</InputLabel>
+          <Controller
+            name='department'
+            control={control}
+            defaultValue=''
+            render={({ field }) => (
+              <Select
+                {...field}
+                labelId="department"
+                sx={{
+                  width: '100%'
+                }}
+              >
+                <MenuItem value="">--Select User--</MenuItem>
+                {departments.map((d)=><MenuItem value={d.name}>{d.name}</MenuItem>)}
+              </Select>
+            )}
+          />
+          
+          {errors.department?.message && <FormHelperText error>{errors.department?.message}</FormHelperText>}
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <InputLabel id="designation">Designation</InputLabel>
+          <Controller
+            name='designation'
+            control={control}
+            defaultValue=''
+            render={({ field }) => (
+              <Select
+                {...field}
+                labelId="designation"
+                sx={{
+                  width: '100%'
+                }}
+              >
+                <MenuItem value="">--Select User--</MenuItem>
+               {designationlist&&designationlist.map((d)=><MenuItem value={d.name}>{d.name}</MenuItem>)}
+              </Select>
+            )}
+          />
+          
+          {errors.designation?.message && <FormHelperText error>{errors.designation?.message}</FormHelperText>}
         </Grid>
 
        {action==='add' &&<><Grid size={{ xs: 12, sm: 6 }}>

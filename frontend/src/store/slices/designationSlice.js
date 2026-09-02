@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAxios, postAxios } from "./axiosAction";
+import { deleteAxios, getAxios, patchAxios, postAxios, putAxios } from "./axiosAction";
 import { enqueueSnackbar } from "notistack";
 
 const initialState={
@@ -33,8 +33,8 @@ export function createDesignation(data){
         try {
             const res = await postAxios('/designation', data)
 
-            debugger
             if(res.statusText==="Created"){
+                dispatch(fetchDesignation());
                 enqueueSnackbar(res.data.message);
             }
         } catch (error) {
@@ -50,11 +50,45 @@ export function fetchDesignation(){
         try {
             const res = await getAxios('/designation', )
             if(res.statusText==='OK'){
-                enqueueSnackbar(res.data.message);
+                // enqueueSnackbar(res.data.message);
                 dispatch(setDesignation(res.data.data));
             }
         } catch (error) {
             
+        }finally{
+            dispatch(stopLoader());
+        }
+    }
+}
+
+export const editDesignation = (data, id)=>{
+    
+    return async(dispatch)=>{
+        dispatch(startLoader());
+        try {
+            const res = await patchAxios(`/designation/${id}`, data);
+            if(res.statusText==='OK'){
+                dispatch(fetchDesignation());
+                enqueueSnackbar(res.data.message);
+            }
+        } catch (error) {
+            console.error(error)
+        }finally{
+            dispatch(stopLoader());
+        }
+    }
+}
+export const deleteDesignation = (id)=>{
+    return async(dispatch)=>{
+        dispatch(startLoader());
+        try {
+            const res = await deleteAxios(`/designation/${id}`);
+            if(res.statusText==='OK'){
+                dispatch(fetchDesignation());
+                enqueueSnackbar(res.data.message);
+            }
+        } catch (error) {
+            console.error(error)
         }finally{
             dispatch(stopLoader());
         }

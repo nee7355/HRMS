@@ -6,7 +6,7 @@ import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
 import AddDesignationModal from '../../components/modals/AddDesignationModal';
 import CustomTale from '../../components/CustomTale';
 import { useDispatch, useSelector } from 'react-redux';
-import { designationSelector, fetchDesignation } from '../../../store/slices/designationSlice';
+import { deleteDesignation, designationSelector, editDesignation, fetchDesignation } from '../../../store/slices/designationSlice';
 import IconButton from '@mui/material/IconButton';
 
 const Designation = () => {
@@ -14,6 +14,7 @@ const Designation = () => {
     const [openAddDesignationModal, setOpenAddDesignationModal] = useState(false);
     const [actionType, setActionType] = useState('Add')
     const {designation} = useSelector(designationSelector);
+    const[selectedData, setSelectedData] = useState({});
 
     const dispatch = useDispatch();
     useEffect(()=>{
@@ -30,11 +31,16 @@ const Designation = () => {
         >Add Designation</Button>
     }, []);
 
-    const handleEdit = ()=>{
-        
+  
+    const handleEdit = (data)=>{
+        setSelectedData(data);
+        setActionType('Edit')
+        setOpenAddDesignationModal(true)
+        dispatch(editDesignation(data._id));
     }
-    const handleDelete = ()=>{
-
+    const handleDelete = (id)=>{
+       
+        dispatch(deleteDesignation(id))
     }
 
     const column = useMemo(()=>[
@@ -45,13 +51,13 @@ const Designation = () => {
         },
         {
             id:2,
-            header: 'Name',
+            header: 'Designation',
             key: 'name',
         },
         {
             id:3,
             header: 'Department',
-            key: 'departmentId',
+            key: 'departmentId.name',
         },
         {
             id:4,
@@ -62,7 +68,7 @@ const Designation = () => {
             id:5,
             header: 'Action',
              Cell: (row) => <Box>
-                <IconButton onClick={() => {handleEdit(row); setActionType('Edit')}} sx={{ width: '18px', height: '18px', padding: 0, marginRight: 1 }}>
+                <IconButton onClick={() => {handleEdit(row);}} sx={{ width: '18px', height: '18px', padding: 0, marginRight: 1 }}>
                     <IconEdit />
                 </IconButton>
                 <IconButton onClick={() => handleDelete(row._id)} sx={{ width: '18px', height: '18px', padding: 0, marginRight: 1 }}>
@@ -79,7 +85,7 @@ const Designation = () => {
 
         <CustomTale column={column} data={designation}/>
     </Box>
-    {openAddDesignationModal&&<AddDesignationModal open={openAddDesignationModal} handleClose={()=>setOpenAddDesignationModal(false)}/>}
+    {openAddDesignationModal&&<AddDesignationModal action={actionType} open={openAddDesignationModal} handleClose={()=>setOpenAddDesignationModal(false)} data={selectedData}/>}
     </>
   )
 }

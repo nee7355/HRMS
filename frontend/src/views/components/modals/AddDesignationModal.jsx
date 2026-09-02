@@ -12,13 +12,14 @@ import { Controller, useForm } from 'react-hook-form'
 import Grid from '@mui/material/Grid'
 import InputLabel from '@mui/material/InputLabel'
 import OutlinedInput from '@mui/material/OutlinedInput'
+import FormHelperText from '@mui/material/FormHelperText'
 import Box from '@mui/material/Box'
 import { useDispatch, useSelector } from 'react-redux'
 import { createDepartment, deparmentSelector, editDepartment, fetchDepartments } from '../../../store/slices/departmentSlice'
 import { useEffect } from 'react'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
-import { createDesignation } from '../../../store/slices/designationSlice'
+import { createDesignation, editDesignation } from '../../../store/slices/designationSlice'
 
 const AddDesignationModal = ({ open, handleClose, data={}, action='Add' }) => {
     const {
@@ -26,6 +27,7 @@ const AddDesignationModal = ({ open, handleClose, data={}, action='Add' }) => {
         handleSubmit,
         watch,
         control,
+        reset,
         setValue,
         setError,
         formState: { errors }
@@ -33,36 +35,43 @@ const AddDesignationModal = ({ open, handleClose, data={}, action='Add' }) => {
 
     const {departments} = useSelector(deparmentSelector);
     const dispatch = useDispatch();
+    const departmentId = watch("departmentId")
 
-    useEffect(()=>{
-        Object.entries(data).forEach(([key, value])=>{
-            setValue(key, value,{
-                shouldDirty: true,
-                shouldValidate: true
-            })
-        })
-    },[data]);
+    useEffect(() => {
+        const selectedDepartmentId = typeof data?.departmentId === 'object'
+            ? data?.departmentId?._id
+            : data?.departmentId;
+
+        reset({
+            departmentId: selectedDepartmentId || '',
+            name: data?.name || '',
+            description: data?.description || ''
+        });
+    }, [data, open, reset]);
 
     useEffect(()=>{
         dispatch(fetchDepartments());
     },[])
 
     const onSubmit = (formData) => {
+        
         if(action==='Add')
         {
             dispatch(createDesignation(formData));
         }else if(action === 'Edit')
         {
-            dispatch(editDepartment(formData, data._id));
+            dispatch(editDesignation(formData, data._id));
         }
 
         handleClose();
     }
 
+    console.log('data.........', data)
+    console.log('departmentId?._id.........', departmentId?._id)
     return (
         <Dialog open={open} onClose={handleClose} sx={{ '& .MuiPaper-root ':{maxWidth:'500px', minHeight: '200px'}}}>
             <DialogTitle component={Stack} direction={'row'} justifyContent={'space-between'} alignItems={'center'} sx={{ py: `4px !important` }}>
-                <Typography variant='h5'>Add Department</Typography>
+                <Typography variant='h5'>{action} Department</Typography>
                 <IconButton shape='rounded' color='secondary' onClick={handleClose}><IconX /></IconButton>
             </DialogTitle>
             <Divider />
@@ -74,17 +83,19 @@ const AddDesignationModal = ({ open, handleClose, data={}, action='Add' }) => {
                             <Controller
                                 name='departmentId'
                                 control={control}
-                                defaultValue=''
                                 render={({ field }) => (
                                     <Select
                                         {...field}
+                                        value={field.value ?? ''}
                                         labelId="role"
                                         sx={{
                                             width: '100%'
                                         }}
                                     >
                                         <MenuItem value="">--Select Department--</MenuItem>
-                                        {departments.map((d)=><MenuItem value={d._id}>{d.name}</MenuItem>)}
+                                        {departments.map((d) => (
+                                            <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>
+                                        ))}
                                     </Select>
                                 )}
                             />

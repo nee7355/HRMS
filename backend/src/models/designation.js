@@ -17,7 +17,7 @@ const designationSchema = mongoose.Schema({
     },
     departmentId:{
         type: mongoose.Types.ObjectId,
-        ref: 'department',
+        ref: 'Department',
         required: true
     }
 },

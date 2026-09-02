@@ -29,7 +29,7 @@ import SimpleBar from '@/components/third-party/SimpleBar';
 import { IconBell, IconCode, IconChevronDown, IconGitBranch, IconNote, IconGps } from '@tabler/icons-react';
 
 import avatar1 from '@/assets/images/users/avatar-1.png';
-import avatar4 from '@/assets/images/users/avatar-4.png';
+// import avatar4 from '@/assets/images/users/avatar-4.png';
 import avatar5 from '@/assets/images/users/avatar-5.png';
 
 const swing = keyframes`
@@ -91,7 +91,7 @@ export default function Notification() {
       dateTime: 'Jul 11'
     },
     {
-      avatar: { alt: 'Travis Howard', src: avatar4 },
+      avatar: { alt: 'Travis Howard', src: '' },
       badge: <IconNote size={14} />,
       title: 'Admin Approval · Document Submission Accepted',
       subTitle: 'Salvatore Bogan',

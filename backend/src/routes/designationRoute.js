@@ -13,10 +13,10 @@ router.get('/:id', getDesignationByIdController)
 router.post('/', addDesignationController);
 
 // PUT /api/designations/:id
-router.put('/:id', editDesignationController);
+router.patch('/:id', editDesignationController);
 
 // DELETE /api/designations/:id
-router.post('/id', deleteDesignationController);
+router.delete('/:id', deleteDesignationController);
 
 
 export default router;
