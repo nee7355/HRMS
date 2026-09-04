@@ -8,13 +8,14 @@ import Typography from '@mui/material/Typography';
 // @project
 import RouterLink from '@/components/Link';
 import { APP_DEFAULT_PATH } from '@/config';
-import menuItems from '@/menu';
+// import menuItems from '@/menu';
 import { useGetBreadcrumbsMaster } from '@/services/states/breadcrumbs';
 import { generateFocusStyle } from '@/utils/generateFocusStyle';
 import { usePathname } from '@/utils/navigation';
 
 // @assets
 import { IconChevronRight } from '@tabler/icons-react';
+import useMenuItems from '../menu';
 
 // @data
 const homeBreadcrumb = { title: 'Home', url: APP_DEFAULT_PATH };
@@ -25,6 +26,7 @@ export default function Breadcrumbs() {
   const theme = useTheme();
   const location = usePathname();
   const { breadcrumbsMaster } = useGetBreadcrumbsMaster();
+  const menuItems = useMenuItems()
 
   const [breadcrumbItems, setBreadcrumbItems] = useState([]);
   const [activeItem, setActiveItem] = useState();

@@ -35,6 +35,8 @@ import profile from '@/assets/images/users/avatar-1.png';
 import { getUser, logout } from '../../../../services/auth/auth';
 import { Router } from 'react-router-dom';
 import { useRouter } from '../../../../utils/navigation';
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../../../store/slices/authSllice';
 
 /***************************  HEADER - PROFILE DATA  ***************************/
 
@@ -50,6 +52,8 @@ const languageList = [
 /***************************  HEADER - PROFILE  ***************************/
 
 export default function ProfileSection() {
+  const {user} = useSelector(authSelector)
+  
   const theme = useTheme();
   const {
     state: { i18n }
@@ -58,7 +62,7 @@ export default function ProfileSection() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [innerAnchorEl, setInnerAnchorEl] = useState(null);
 
-  const user = useMemo(()=>getUser(),[])
+  // const user = useMemo(()=>getUser(),[])
   const profileData = {
     avatar: { src: profile, size: AvatarSize.XS },
     title: user?.firstName || "Neeraj",

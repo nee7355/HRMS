@@ -27,6 +27,9 @@ import { emailSchema, passwordSchema } from '@/utils/validation-schema/common';
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import { handleLogin } from '@/services/auth/auth';
 import { useSnackbar } from 'notistack';
+import { useEffect } from 'react';
+import { checkAuth } from '../../../../store/slices/authSllice';
+import { useDispatch } from 'react-redux';
 
 // Mock user credentials
 const userCredentials = [
@@ -49,9 +52,11 @@ export default function AuthLogin({ inputSx }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [loginError, setLoginError] = useState('');
+  const [user, setUser] = useState({});
 
-   const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
+  const dispatch = useDispatch();
   // Initialize react-hook-form
   const {
     register,
@@ -68,12 +73,16 @@ export default function AuthLogin({ inputSx }) {
   const onSubmit = async(formData) => {
     try {
       setIsProcessing(true);
+      
       const res = await handleLogin(formData);
+      
+      setUser(res.data.data.user)
       enqueueSnackbar("Login Successfully")
       setLoginError('');
       router.push(APP_DEFAULT_PATH);
     } catch (error) {
       const data = error.response?.data;
+      
       if(data.errors){
          Object.entries(data.errors).forEach(([field, message])=>{
           setError(field,{
@@ -95,6 +104,9 @@ export default function AuthLogin({ inputSx }) {
     }
   };
 
+    useEffect(()=>{
+      dispatch(checkAuth())
+    },[])
   const commonIconProps = { size: 16, color: theme.vars.palette.grey[700] };
 
   return (

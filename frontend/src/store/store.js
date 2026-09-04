@@ -2,6 +2,8 @@ import {configureStore} from '@reduxjs/toolkit'
 import userReducer from './slices/userSlice'
 import departmentReducer from './slices/departmentSlice';
 import designationReducer from './slices/designationSlice';
+import departmentManagerReducer from './slices/managerSlice';
+import authReducer from './slices/authSllice';
 
 const loggerMiddler = (store)=>(next)=>(action)=>{
     console.log(action);
@@ -15,7 +17,9 @@ export const store = configureStore({
     reducer: {
         employees: userReducer,
         departments: departmentReducer,
-        designation: designationReducer
+        designation: designationReducer,
+        departmentManager: departmentManagerReducer,
+        auth: authReducer,
     },
     middleware:(getDefaultMiddleware)=>getDefaultMiddleware().concat(loggerMiddler),
 });

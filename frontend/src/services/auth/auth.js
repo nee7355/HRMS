@@ -1,24 +1,25 @@
 import { useSnackbar } from "notistack";
-import { axiosPost } from "../api/axios"
+import { postAxios } from "../../store/slices/axiosAction";
+
 
 export const handleRegister = async(data)=>{
    
-    const res = await axiosPost('/employees/addEmployee', data);
+    const res = await postAxios('/employees/addEmployee', data);
 
     return res;
     
 }
 export const handleLogin = async(data)=>{
    
-    const res = await axiosPost('/employees/login', data);
+    const res = await postAxios('/employees/login', data);
     
-    if(res.status===200){
-        const{token, user} = res.data.data
+    // if(res.status===200){
+    //     const{token, user} = res.data.data
         
-        localStorage.setItem("token", token.token);
+    //     localStorage.setItem("token", token.token);
         
-        localStorage.setItem("user", JSON.stringify(user));
-    }
+    //     localStorage.setItem("user", JSON.stringify(user));
+    // }
 
     return res;
     

@@ -64,7 +64,20 @@ const employeeSchema = mongoose.Schema({
     userId: {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    managerId: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Employee'
+    },
+    department: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Department'
+    },
+    designation: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Designation'
+    },
+
 },{
     timestamps: true,
 });

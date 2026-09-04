@@ -17,6 +17,8 @@ import Loader from '@/components/Loader';
 import { DRAWER_WIDTH } from '@/config';
 import { useMemo } from 'react';
 import { usePathname, useRouter } from '../../utils/navigation';
+import { useDispatch } from 'react-redux';
+import { checkAuth } from '../../store/slices/authSllice';
 
 /***************************  ADMIN LAYOUT  ***************************/
 
@@ -27,6 +29,7 @@ export default function Layout() {
   const currentPath = usePathname();
   const router = useRouter();
 
+  const dispatch = useDispatch();
   const dashboardHeader = useMemo(()=>{
     if(currentPath === '/dashboard') return <Header/>
     return <></>
@@ -40,6 +43,10 @@ export default function Layout() {
   useEffect(() => {
     handlerDrawerOpen(!downXL);
   }, [downXL]);
+
+  // useEffect(()=>{
+  //   dispatch(checkAuth())
+  // },[])
 
 
   if (menuMasterLoading) return <Loader />;

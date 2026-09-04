@@ -87,6 +87,7 @@ export const userLoginController = async (req, res) => {
         const role = await Role.find({ _id: user.role });
        
         const userData = {
+            _id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
@@ -101,12 +102,18 @@ export const userLoginController = async (req, res) => {
         // console.log("userData", userData);
         const token = await generateToken(userData);
 
+        res.cookie("jwtToken", token.token, {
+            httpOnly: true,
+            secure:false,
+            sameSite: "lax",
+            maxAge: 24*60*60*1000
+        })
+
         if (token.success) return res.status(200).json({
             success: true,
             message: "Login Successfull",
             data: {
                 user: userData,
-                token
             }
 
         });

@@ -32,6 +32,7 @@ import { handleUserAction } from '../../../../store/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { designationSelector, fetchDesignation } from '../../../../store/slices/designationSlice';
 import { deparmentSelector, fetchDepartments } from '../../../../store/slices/departmentSlice';
+import { departmentManagerSelector, fetchMangerByDepartment } from '../../../../store/slices/managerSlice';
 
 // @types
 
@@ -47,6 +48,7 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
   const [registerError, setRegisterError] = useState('');
   const {departments} = useSelector(deparmentSelector)
   const {designation} = useSelector(designationSelector)
+  const {departmentManager} = useSelector(departmentManagerSelector)
 
    const { enqueueSnackbar } = useSnackbar();
    const dispatch = useDispatch();
@@ -134,10 +136,16 @@ useEffect(()=>{
     if (!designation?.length || !selectedDepartment) return [];
 
     return designation.filter((item) => {
-      const departmentName = typeof item.departmentId === 'object' ? item.departmentId?.name : item.departmentId;
-      return departmentName === selectedDepartment;
+      const departmentId = typeof item.departmentId === 'object' ? item.departmentId?._id : item.departmentId;
+      return departmentId === selectedDepartment;
     });
   }, [designation, selectedDepartment]);
+
+  const managerList = useMemo(() => {
+    if (!selectedDepartment) return [];
+    dispatch(fetchMangerByDepartment(selectedDepartment));
+   
+  }, [dispatch, selectedDepartment]);
 
   useEffect(() => {
     if (!selectedDepartment) {
@@ -145,11 +153,16 @@ useEffect(()=>{
       return;
     }
 
-    if (selectedDesignation && !designationlist.some((item) => item.name === selectedDesignation)) {
+    if (selectedDesignation && !designationlist.some((item) => item._id === selectedDesignation)) {
       setValue('designation', '');
     }
   }, [selectedDepartment, selectedDesignation, designationlist, setValue]);
 
+  useEffect(()=>{
+        dispatch(fetchMangerByDepartment(selectedDepartment ));
+  }, [selectedDepartment])
+  
+  console.log(departmentManager)
   return (
     <form onSubmit={handleSubmit(onSubmit, onInvalid)} autoComplete="off">
       <Grid container rowSpacing={2} columnSpacing={1.5}>
@@ -293,7 +306,7 @@ useEffect(()=>{
                 }}
               >
                 <MenuItem value="">--Select User--</MenuItem>
-                {departments.map((d)=><MenuItem value={d.name}>{d.name}</MenuItem>)}
+                {departments.map((d)=><MenuItem value={d._id}>{d.name}</MenuItem>)}
               </Select>
             )}
           />
@@ -309,18 +322,43 @@ useEffect(()=>{
             render={({ field }) => (
               <Select
                 {...field}
+                value={field.value ?? ''}
                 labelId="designation"
                 sx={{
                   width: '100%'
                 }}
               >
                 <MenuItem value="">--Select User--</MenuItem>
-               {designationlist&&designationlist.map((d)=><MenuItem value={d.name}>{d.name}</MenuItem>)}
+                {designationlist?.map((d) => (
+                  <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>
+                ))}
               </Select>
             )}
           />
           
           {errors.designation?.message && <FormHelperText error>{errors.designation?.message}</FormHelperText>}
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <InputLabel id="manager">Manager</InputLabel>
+          <Controller
+            name='manager'
+            control={control}
+            defaultValue=''
+            render={({ field }) => (
+              <Select
+                {...field}
+                labelId="manager"
+                sx={{
+                  width: '100%'
+                }}
+              >
+                <MenuItem value="">--Select User--</MenuItem>
+               {departmentManager.length>0&&departmentManager.map((d)=><MenuItem value={d._id}>{d.name}</MenuItem>)}
+              </Select>
+            )}
+          />
+          
+          {errors.manager?.message && <FormHelperText error>{errors.manager?.message}</FormHelperText>}
         </Grid>
 
        {action==='add' &&<><Grid size={{ xs: 12, sm: 6 }}>

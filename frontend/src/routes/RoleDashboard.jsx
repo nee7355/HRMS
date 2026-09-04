@@ -5,12 +5,15 @@ import HrDashboard from '@/views/pages/hr/dashboard';
 import ManagerDashboard from '@/views/pages/manager/dashboard';
 import UserDashboard from '@/views/pages/user/dashboard';
 import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { authSelector } from '../store/slices/authSllice';
 
 const RoleDashboard = () => {
+  const {user} = useSelector(authSelector)
 
-  const user = getUser();
+//   const user = getUser();
 
-  switch(user.role){
+  switch(user.role.name){
     case 'ADMIN':
         return <AdminDashboard/>;
     case 'HR':

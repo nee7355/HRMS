@@ -9,15 +9,18 @@ import NavItem from './NavItem';
 import { useMemo } from 'react';
 import { getUser } from '../../../../../services/auth/auth';
 import menuList from '../../../../../menu/sidebarMenu';
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../../../../store/slices/authSllice';
 
 /***************************  DRAWER CONTENT - RESPONSIVE DRAWER  ***************************/
 
 export default function ResponsiveDrawer() {
-  const user = getUser();
+  const {user} = useSelector(authSelector)
+  // const user = getUser();
 
   const menus = useMemo(()=>{
-      const menu = menuList[user.role.toLowerCase()]
-      
+    // debugger
+      const menu = menuList[user.role.name.toLowerCase()]
       return {
         items: [...menu]
       }
