@@ -10,7 +10,7 @@ export const checkInController = async(req, res)=>{
         const endOfDay = new Date();
         endOfDay.setHours(23, 59, 59, 999)
     
-        const existingAandance = await Attendance.find(
+        const existingAandance = await Attendance.findOne(
             {
                 employeeId, 
                 date: {
@@ -19,7 +19,7 @@ export const checkInController = async(req, res)=>{
                 }
             }
         );
-    
+
         if(existingAandance){
             return failed(res, 400, "You have already checkIn");
         }
@@ -50,7 +50,7 @@ export const checkOutController = async(req, res)=>{
         const endOfDay = new Date();
         endOfDay.setHours(23,59,59,999);
     
-        const attendance = await Attendance.find(
+        const attendance = await Attendance.findOne(
             {
                 employeeId,
                 date: {
@@ -84,4 +84,31 @@ export const checkOutController = async(req, res)=>{
         return failed(res, 500, "Somethin went wrong")
     }
 
+}
+
+export const getTodayAttendanceController = async(req, res)=>{
+    try {
+        const employeeId = req.user._id;
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0); 
+
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+
+
+        const todayAttendance = await Attendance.findOne(
+            {
+                employeeId,
+                date:{
+                    $gte: startOfDay,
+                    $lte: endOfDay
+                }
+            }
+        )
+
+        return success(res, 200, "", todayAttendance);
+    } catch (error) {
+        console.error(error);
+        return failed(res, 500, 'Internal server error');
+    }
 }

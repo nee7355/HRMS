@@ -6,9 +6,13 @@ import Typography from '@mui/material/Typography'
 import { useMemo } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { attendanceSelector, checkInApi, checkOutApi, getTodayAttendance } from '../../../store/slices/attendanceSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const MarkAttendance = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
+    const {attendance} = useSelector(attendanceSelector);
+    const dispatch = useDispatch();
     const currentDate = useMemo(()=>{
         const date = new Date();
         const formattedDate = new Intl.DateTimeFormat('en-GB',{
@@ -27,6 +31,21 @@ const MarkAttendance = () => {
 
         return ()=> clearInterval(time);
     },[]);
+
+    useEffect(()=>{
+        dispatch(getTodayAttendance());
+    },[])
+
+    const handleCheckInOut = ()=>{
+        if(!attendance?.checkIn){
+        dispatch(checkInApi());
+        }
+        else if(attendance?.checkIn){
+        dispatch(checkOutApi());
+        }
+        
+    }
+
     return (
         <Box sx={{display:'flex', alignItems:'center', gap: 3}}>
              <PresentationCard  cardSx={{width: '250px'}}>
@@ -43,7 +62,7 @@ const MarkAttendance = () => {
                       })}
                     </Typography>
                     </Box>
-                     <Button variant='contained' color='success'>CheckIn</Button>
+                     <Button variant='contained' color='success' onClick={handleCheckInOut}>{attendance?.checkIn?'checkOut':'CheckIn'}</Button>
                   </PresentationCard>
            
             {/* <Box>
