@@ -9,13 +9,13 @@ import MainCard from '@/components/MainCard';
 
 /***************************  PRESENTATION CARD  ***************************/
 
-export default function PresentationCard({ title, children }) {
+export default function PresentationCard({ title, children, cardSx }) {
   return (
-    <MainCard>
+    <MainCard sx={cardSx}>
       <Stack sx={{ gap: 3.25 }}>
-        <Typography variant="h6" sx={{ fontWeight: 400 }}>
+        {title&&<Typography variant="h6" sx={{ fontWeight: 400 }}>
           {title}
-        </Typography>
+        </Typography>}
         {children}
       </Stack>
     </MainCard>

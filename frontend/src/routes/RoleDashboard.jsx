@@ -1,6 +1,6 @@
 import React from 'react'
 import { getUser } from '@/services/auth/auth'
-import AdminDashboard from '@/views/pages/admin/dashboard';
+import AdminDashboard from '@/views/pages/admin';
 import HrDashboard from '@/views/pages/hr/dashboard';
 import ManagerDashboard from '@/views/pages/manager/dashboard';
 import UserDashboard from '@/views/pages/user/dashboard';

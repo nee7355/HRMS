@@ -1,8 +1,12 @@
+import Box from '@mui/material/Box'
 import React from 'react'
+import MarkAttendance from '../../components/attendance/MarkAttendance'
 
 const AdminDashboard = () => {
   return (
-    <div>AdminDashboard</div>
+    <Box>
+        <MarkAttendance/>
+    </Box>
   )
 }
 
