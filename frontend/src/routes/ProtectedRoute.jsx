@@ -9,7 +9,7 @@ const ProtectedRoute = ({}) => {
   const {isAuthenticated, authLoader} = useSelector(authSelector)
 
   if (authLoader) {
-    return <div>Loading...</div>;
+    return <div>Cheking Authentication...</div>;
   }
  
 

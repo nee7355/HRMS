@@ -9,6 +9,7 @@ import router from '@/routes';
 import ThemeCustomization from '@/themes';
 import { store } from './store/store';
 import { useEffect } from 'react';
+import AuthInitializer from './views/pages/auth/AuthInitializer';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       <Provider store={store}>
+        <AuthInitializer>
         <ConfigProvider>
           <ThemeCustomization>
             <Notistack>
@@ -23,6 +25,7 @@ function App() {
             </Notistack>
           </ThemeCustomization>
         </ConfigProvider>
+        </AuthInitializer>
       </Provider>
     </>
   );

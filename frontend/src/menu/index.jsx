@@ -10,8 +10,9 @@ import { authSelector } from "../store/slices/authSllice";
 
 const useMenuItems = () => {
     const { user } = useSelector(authSelector);
+    const role = user.role.name?user.role.name:user.role;
 
-    const menus = menuList[user.role.name.toLowerCase()] || [];
+    const menus = menuList[role.toLowerCase()] || [];
 
     return {
         items: menus

@@ -28,7 +28,7 @@ import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import { handleLogin } from '@/services/auth/auth';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
-import { checkAuth } from '../../../../store/slices/authSllice';
+import { checkAuth, setIsAuthenticated, setUser } from '../../../../store/slices/authSllice';
 import { useDispatch } from 'react-redux';
 
 // Mock user credentials
@@ -52,7 +52,7 @@ export default function AuthLogin({ inputSx }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [loginError, setLoginError] = useState('');
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -76,7 +76,8 @@ export default function AuthLogin({ inputSx }) {
       
       const res = await handleLogin(formData);
       
-      setUser(res.data.data.user)
+      dispatch(setUser(res.data.data.user))
+      dispatch(setIsAuthenticated(true))
       enqueueSnackbar("Login Successfully")
       setLoginError('');
       router.push(APP_DEFAULT_PATH);
@@ -104,9 +105,7 @@ export default function AuthLogin({ inputSx }) {
     }
   };
 
-    useEffect(()=>{
-      dispatch(checkAuth())
-    },[])
+
   const commonIconProps = { size: 16, color: theme.vars.palette.grey[700] };
 
   return (

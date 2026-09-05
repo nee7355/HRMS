@@ -12,8 +12,9 @@ const RoleDashboard = () => {
   const {user} = useSelector(authSelector)
 
 //   const user = getUser();
+        const role = user.role.name?user.role.name:user.role;
 
-  switch(user.role.name){
+  switch(role){
     case 'ADMIN':
         return <AdminDashboard/>;
     case 'HR':

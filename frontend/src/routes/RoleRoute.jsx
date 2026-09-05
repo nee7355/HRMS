@@ -12,8 +12,9 @@ const RoleRoute = ({role=[], children}) => {
   if(!user){
     return <Navigate to='/login' replace/>
   }
+      const roleName = user.role.name?user.role.name:user.role;
 
-  if(!role.includes(user?.role.name)){
+  if(!role.includes(roleName)){
     return <Navigate to={'/unautherized'} replace />;
   }
 

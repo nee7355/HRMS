@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getAxios } from "./axiosAction";
 
 const initialState = {
-    authLoader: false,
+    authLoader: true,
     user: null,
     isAuthenticated: false,
 }

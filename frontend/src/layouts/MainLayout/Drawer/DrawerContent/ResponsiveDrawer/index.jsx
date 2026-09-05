@@ -20,7 +20,8 @@ export default function ResponsiveDrawer() {
 
   const menus = useMemo(()=>{
     // debugger
-      const menu = menuList[user.role.name.toLowerCase()]
+    const role = user.role.name?user.role.name:user.role;
+      const menu = menuList[role.toLowerCase()]
       return {
         items: [...menu]
       }
