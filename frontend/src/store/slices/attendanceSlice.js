@@ -47,7 +47,7 @@ export function checkOutApi() {
         dispatch(startLoader())
         try {
              const res = await postAxios('/attendance/check-out')
-             dispatch(setAttendance(res.data.data))
+             dispatch(getTodayAttendance())
             enqueueSnackbar(res.data.message);
         } catch (error) {
 

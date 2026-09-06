@@ -12,7 +12,7 @@ import MainCard from '@/components/MainCard';
 export default function PresentationCard({ title, children, cardSx }) {
   return (
     <MainCard sx={cardSx}>
-      <Stack sx={{ gap: 3.25 }}>
+      <Stack sx={{  }}>
         {title&&<Typography variant="h6" sx={{ fontWeight: 400 }}>
           {title}
         </Typography>}

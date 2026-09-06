@@ -10,7 +10,9 @@ const attandanceSchema = mongoose.Schema({
         required:true,
         type: Date,
     },
-    checkIn:{
+    sessions:[
+        {
+        checkIn:{
         type: Date,
         default: null,
         
@@ -20,13 +22,19 @@ const attandanceSchema = mongoose.Schema({
         default: null,
 
     },
+        workingHours:{
+        type: Number,
+        default: 0,
+    }
+    }
+],
     status:{
         type: String,
         status: ["PERSENT", "COMPLETED", "INCOMPLETE"],
         default: "PERSENT"
 
     },
-    workingHours:{
+    totalWorkingHours:{
         type: Number,
         default: 0,
     }

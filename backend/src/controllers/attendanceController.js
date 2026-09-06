@@ -10,7 +10,7 @@ export const checkInController = async(req, res)=>{
         const endOfDay = new Date();
         endOfDay.setHours(23, 59, 59, 999)
     
-        const existingAandance = await Attendance.findOne(
+         let attendance = await Attendance.findOne(
             {
                 employeeId, 
                 date: {
@@ -19,21 +19,43 @@ export const checkInController = async(req, res)=>{
                 }
             }
         );
+        const checkIn = new Date();
 
-        if(existingAandance){
-            return failed(res, 400, "You have already checkIn");
+
+        if(!attendance){
+            attendance = await Attendance({
+                employeeId,
+                date: new Date(),
+                sessions:[
+                    {
+                        checkIn,
+                        checkOut: null,
+                        workingHours: 0
+                    }
+                ],
+                status: "PERSENT"
+            });
+
+            await attendance.save();
+
+            return success(res, 201, "Check-in successful", attendance);
         }
     
-        const checkIn = await Attendance({
-            employeeId,
-            date: new Date(),
-            checkIn: new Date(),
-            status: "PERSENT"
-        });
+
+        const activeSession = attendance.sessions.find(session=>!session?.checkOut);
+
+        if(activeSession) return failed(res, 400, "You have already checked in");
+
+        attendance.sessions.push({
+            checkIn,
+            checkOut: null,
+            workingHours: 0
+        })
+        attendance.status = "PERSENT";
+
+        await attendance.save()
     
-        await checkIn.save();
-    
-        return success(res, 201, "Check-in successful", checkIn);
+        return success(res, 201, "Check-in successful", attendance);
     } catch (error) {
         console.error(error);
 
@@ -60,24 +82,33 @@ export const checkOutController = async(req, res)=>{
             }
         );
         if(!attendance){
-            return failed(res, 400, "Please check in first");
+            return failed(res, 400, "You are not currently checked in");
         };
     
-        // if(attendance.checkout){
-        //     return failed(res, 400, "you have already checked out");
-        // }
-    
+ 
+        const activeSession = attendance?.sessions?.find(session=> session.checkIn && !session?.checkOut)
+        console.log('attendance...', attendance)
+        console.log('activeSession...', activeSession);
+        
+        if(!activeSession) return failed(res, 400, "Please check in first");
+
         const checkout = new Date();
-        const workingMiliSeconds = checkout.getTime() - attendance.checkIn.getTime();
+        const workingMiliSeconds = checkout.getTime() - activeSession.checkIn.getTime();
         const workingHours = workingMiliSeconds /(1000 * 60 * 60);
-    
-        attendance.checkout = checkout;
-        attendance.workingHours = Number(workingHours.toFixed(2));
+        
+        activeSession.checkOut = checkout;
+        activeSession.workingHours = Number(workingHours.toFixed(2));
+        activeSession.status = "COMPLETED";
+
+        attendance.totalWorkingHours = Number(
+            attendance.sessions.reduce((total, item)=>total+ item.workingHours,0)
+        ).toFixed(2);
+        
         attendance.status = "COMPLETED";
-    
+
         await attendance.save();
     
-        return success(res, 200, "Checked Out Successfully");
+        return success(res, 200, "Checked Out Successfully", attendance);
     } catch (error) {
         console.error(error);
 
