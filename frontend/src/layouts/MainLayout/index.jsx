@@ -30,16 +30,17 @@ export default function Layout() {
   const router = useRouter();
 
   const dispatch = useDispatch();
-  const dashboardHeader = useMemo(()=>{
-    if(currentPath === '/dashboard') return <Header/>
-    return <></>
-  },[currentPath])
+  const dashboardHeader = useMemo(() => {
+    // if(currentPath === '/dashboard') return <Header/>
+    // return <></>
+    return <Header />
+  }, [currentPath])
 
-  useEffect(()=>{
-    if(currentPath==='/'){
+  useEffect(() => {
+    if (currentPath === '/') {
       router.push('/dashboard')
     }
-  },[currentPath]);
+  }, [currentPath]);
   useEffect(() => {
     handlerDrawerOpen(!downXL);
   }, [downXL]);
@@ -57,7 +58,7 @@ export default function Layout() {
       {dashboardHeader}
       <Drawer />
       <Box component="main" sx={{ width: `calc(100% - ${DRAWER_WIDTH}px)`, flexGrow: 1, p: { xs: 2, sm: 3 } }}>
-        {currentPath === '/dashboard'&&<Toolbar sx={{ minHeight: { xs: 54, sm: 46, md: 76 } }} />}
+        { <Toolbar sx={{ minHeight: { xs: 54, sm: 46, md: 76 } }} />}
         <Box
           sx={{
             py: 0.4,

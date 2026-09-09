@@ -6,15 +6,45 @@ import {
 import {
   Users,
   Building2,
-  UserCheck,
   UserMinus,
+  UserCheck,
+  FileText,
+  UserPlus,
+  Receipt,
 } from "lucide-react";
+
 
 
 import MarkAttendance from "../../components/dashboard/MarkAttendance";
 import LeaveOverview from "../../components/dashboard/LeaveOverview";
 import RecentActivities from "../../components/dashboard/RecentActivities";
 import StatCard from "../../components/dashboard/StateCard";
+
+  const activities = [
+    {
+      icon: UserCheck,
+      title: "Rahul Sharma checked in",
+      time: "09:41 AM",
+    },
+
+    {
+      icon: FileText,
+      title: "Priya Singh applied for leave",
+      time: "09:21 AM",
+    },
+
+    {
+      icon: UserPlus,
+      title: "New employee John Doe added",
+      time: "Yesterday",
+    },
+
+    {
+      icon: Receipt,
+      title: "Payroll for August generated",
+      time: "Yesterday",
+    },
+  ];
 
 
 const Dashboard = () => {
@@ -109,9 +139,6 @@ const Dashboard = () => {
         spacing={2}
       >
 
-       
-
-
         <Grid
           size={{
             xs: 12,
@@ -128,7 +155,7 @@ const Dashboard = () => {
             md: 4,
           }}
         >
-          <RecentActivities />
+          <RecentActivities  data={activities}/>
         </Grid>
 
       </Grid>

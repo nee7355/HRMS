@@ -13,39 +13,12 @@ import {
 import DashboardCard from "./DashboardCard";
 
 
-const RecentActivities = () => {
-
-  const activities = [
-    {
-      icon: UserCheck,
-      title: "Rahul Sharma checked in",
-      time: "09:41 AM",
-    },
-
-    {
-      icon: FileText,
-      title: "Priya Singh applied for leave",
-      time: "09:21 AM",
-    },
-
-    {
-      icon: UserPlus,
-      title: "New employee John Doe added",
-      time: "Yesterday",
-    },
-
-    {
-      icon: Receipt,
-      title: "Payroll for August generated",
-      time: "Yesterday",
-    },
-  ];
-
+const RecentActivities = ({data}) => {
 
   return (
     <DashboardCard title="Recent Activities">
 
-      {activities.map((activity, index) => {
+      {data.map((activity, index) => {
 
         const Icon = activity.icon;
 

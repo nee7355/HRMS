@@ -8,6 +8,7 @@ import CustomTale from '../../components/CustomTale';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteDesignation, designationSelector, editDesignation, fetchDesignation } from '../../../store/slices/designationSlice';
 import IconButton from '@mui/material/IconButton';
+import SearchAdd from '../../components/SearchAdd';
 
 const Designation = () => {
     const [searchText, setSearchText] = useState("");
@@ -41,6 +42,10 @@ const Designation = () => {
     const handleDelete = (id)=>{
        
         dispatch(deleteDesignation(id))
+    }
+
+    const handleOpenAddEditModal = ()=>{
+        setOpenAddDesignationModal(true)
     }
 
     const column = useMemo(()=>[
@@ -81,7 +86,13 @@ const Designation = () => {
   return (
     <>
     <Box>
-        <Header searchText={searchText} setSearchText={setSearchText} action={actionProps}/>
+        {/* <Header searchText={searchText} setSearchText={setSearchText} action={actionProps}/> */}
+              <SearchAdd
+                  searchText={searchText}
+                  setSearchText={setSearchText}
+                  handle={handleOpenAddEditModal}
+                  addBtnText='Add Designation'
+              />
 
         <CustomTale column={column} data={designation}/>
     </Box>
