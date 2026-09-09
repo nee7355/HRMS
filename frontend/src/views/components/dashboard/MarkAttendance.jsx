@@ -116,7 +116,7 @@ const MarkAttendance = () => {
         return `${greetMessaage}, ${user.firstName}`;
     },[])
 
-    console.log('attendancesessioon', attendaceSession)
+    // console.log('attendancesessioon', attendaceSession)
     return (
         <Box sx={{ display: 'flex', gap: 3, flexDirection:'column' }}>
             <Box>
@@ -181,7 +181,7 @@ const MarkAttendance = () => {
 
                     </Box>
                     <Box textAlign={'center'}>
-                        {attendance?.totalWorkingHours && <Box>
+                        {attendance?.totalWorkingHours>0 && <Box>
                             <Typography>Total Working Time (Today)</Typography>
                             <Typography variant='h6' fontWeight={'bold'} color='success'>{attendance?.totalWorkingHours}</Typography>
                         </Box>}

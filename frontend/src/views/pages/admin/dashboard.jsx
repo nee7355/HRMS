@@ -1,28 +1,140 @@
-// @mui
-import Grid from '@mui/material/Grid';
+import {
+  Box,
+  Grid,
+} from "@mui/material";
 
-// @project
-import AnalyticsOverviewCard from '@/sections/dashboard/AnalyticsOverviewCard';
-import AnalyticsOverviewChart from '@/sections/dashboard/AnalyticsOverviewChart';
-import AnalyticsTopRef from '@/sections/dashboard/AnalyticsTopRef';
-
-/***************************  ANALYTICS - OVERVIEW  ***************************/
-
-export default function Dashboard() {
+import {
+  Users,
+  Building2,
+  UserCheck,
+  UserMinus,
+} from "lucide-react";
 
 
-  console.log("admin dashboard is rendering now ................................")
+import MarkAttendance from "../../components/dashboard/MarkAttendance";
+import LeaveOverview from "../../components/dashboard/LeaveOverview";
+import RecentActivities from "../../components/dashboard/RecentActivities";
+import StatCard from "../../components/dashboard/StateCard";
+
+
+const Dashboard = () => {
+
+  const stats = [
+    {
+      title: "Total Employees",
+      value: 124,
+      icon: Users,
+      color: "primary",
+      change: 8,
+      changeText: "this month",
+    },
+
+    {
+      title: "Departments",
+      value: 8,
+      icon: Building2,
+      color: "secondary",
+      change: 0,
+      changeText: "this month",
+      changeType: "same",
+    },
+
+    {
+      title: "Present Today",
+      value: 108,
+      icon: UserCheck,
+      color: "success",
+      change: 5,
+      changeText: "today",
+    },
+
+    {
+      title: "On Leave",
+      value: 12,
+      icon: UserMinus,
+      color: "warning",
+      change: 2,
+      changeText: "today",
+    },
+  ];
+
+
   return (
-    <Grid container spacing={{ xs: 2, md: 3 }}>
-      <Grid size={12}>
-        <AnalyticsOverviewCard />
+    <Box
+      sx={{
+        p: 2,
+        bgcolor: "#F8FAFC",
+        minHeight: "100vh",
+      }}
+    >
+
+      {/* =========================
+          STAT CARDS
+      ========================= */}
+
+      <Grid
+        container
+        spacing={2}
+        sx={{ mb: 2 }}
+      >
+       <Grid
+          size={{
+            xs: 12,
+          }}
+        >
+          <MarkAttendance/>
+        </Grid>
+        {stats.map((stat) => (
+          <Grid
+            key={stat.title}
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 3,
+            }}
+          >
+            <StatCard {...stat} />
+          </Grid>
+        ))}
+
       </Grid>
-      <Grid size={12}>
-        <AnalyticsOverviewChart />
+
+
+      {/* =========================
+          DASHBOARD CARDS
+      ========================= */}
+
+      <Grid
+        container
+        spacing={2}
+      >
+
+       
+
+
+        <Grid
+          size={{
+            xs: 12,
+            md: 4,
+          }}
+        >
+          <LeaveOverview />
+        </Grid>
+
+
+        <Grid
+          size={{
+            xs: 12,
+            md: 4,
+          }}
+        >
+          <RecentActivities />
+        </Grid>
+
       </Grid>
-      <Grid size={12}>
-        <AnalyticsTopRef />
-      </Grid>
-    </Grid>
+
+    </Box>
   );
-}
+};
+
+export default Dashboard;
