@@ -55,4 +55,6 @@ const leaveSchema = mongoose.Schema({
 {
     timestamps: true
 }
-)
+);
+
+export default mongoose.model("leave", leaveSchema);

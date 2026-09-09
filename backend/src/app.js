@@ -9,6 +9,7 @@ import designationRoute from "./routes/designationRoute.js"
 import managerRoute from "./routes/managerRoutes.js";
 import authRoute from './routes/authRoute.js';
 import attendanceRoute from './routes/attendanceRoute.js';
+import leaveRoute from './routes/leaveRoute.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -46,6 +47,7 @@ app.use("/api/v1/employees", userRoutes);
 app.use("/api/v1/department", departmentrRoutes);
 app.use("/api/v1/designation", designationRoute);
 app.use("/api/v1/manager", managerRoute);
-app.use("/api/v1/attendance", attendanceRoute);
+app.use("/api/v1/attendance", attendanceRoute); 
+app.use("/api/v1/leave", leaveRoute); 
 
 export default app;
