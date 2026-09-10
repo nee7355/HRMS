@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import React, { useEffect, useMemo, useState } from 'react'
-import Header from './header'
+// import Header from './header'
 import Toolbar from '@mui/material/Toolbar'
 import CustomTale from '../../components/CustomTale'
 import { useDispatch, useSelector } from 'react-redux'
