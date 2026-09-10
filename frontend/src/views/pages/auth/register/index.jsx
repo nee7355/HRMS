@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 // @project
 import RouterLink from '@/components/Link';
 import { SocialTypes } from '@/enum';
-import AuthRegister from '@/views/auth/register/AuthRegister';
+import AuthRegister from '@/views/pages/auth/register/AuthRegister';
 // import AuthSocial from '@/views/pages/auth/AuthSocial';
 
 /***************************  AUTH - REGISTER  ***************************/
