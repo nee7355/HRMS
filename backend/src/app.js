@@ -25,6 +25,13 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(morgan("dev"));
 
+app.get('/', (req, res)=>{
+    return res.status(200).json({
+        success: true,
+        message: "Server is running"
+    })
+})
+
 app.get("/api/v1/health", (req, res)=>{
     try {
         return res.status(200).json({
@@ -40,7 +47,8 @@ app.get("/api/v1/health", (req, res)=>{
             message: "api crashed"
         })
     }
-})
+});
+
 
 app.use("/api/v1/", authRoute);
 app.use("/api/v1/employees", userRoutes);

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAxios } from "./axiosAction";
+import { getAxios, postAxios } from "./axiosAction";
+import { enqueueSnackbar } from "notistack";
 
 const initialState = {
     authLoader: true,
@@ -45,6 +46,24 @@ export function checkAuth(){
             console.error('Error fetching manager by department:', error);
                 dispatch(setUser(null));
                 dispatch(setIsAuthenticated(false));
+            
+        } finally {
+            dispatch(stopLoader());
+        }
+    }
+}
+
+export const logOutUser= ()=>{
+   return async(dispatch)=>{
+        dispatch(startLoader());
+        try {
+            const res = await postAxios(`/logout`);
+            if (res.statusText === 'OK') {
+                enqueueSnackbar(res.data.message);
+            }
+        } catch (error) {
+            // console.error('Error fetching manager by department:', error);
+                
             
         } finally {
             dispatch(stopLoader());

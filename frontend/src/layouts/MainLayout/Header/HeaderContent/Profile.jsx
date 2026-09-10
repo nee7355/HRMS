@@ -35,8 +35,8 @@ import profile from '@/assets/images/users/avatar-1.png';
 import { getUser, logout } from '../../../../services/auth/auth';
 import { Router } from 'react-router-dom';
 import { useRouter } from '../../../../utils/navigation';
-import { useSelector } from 'react-redux';
-import { authSelector } from '../../../../store/slices/authSllice';
+import { useDispatch, useSelector } from 'react-redux';
+import { authSelector, logOutUser } from '../../../../store/slices/authSllice';
 
 /***************************  HEADER - PROFILE DATA  ***************************/
 
@@ -75,6 +75,8 @@ export default function ProfileSection() {
   const innerId = innerOpen ? 'profile-inner-popper' : undefined;
   const buttonStyle = { borderRadius: 2, p: 1 };
 
+  const dispatch = useDispatch();
+
   const router = useRouter();
   const handleActionClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -86,8 +88,9 @@ export default function ProfileSection() {
 
   const logoutAccount = () => {
     setAnchorEl(null);
-    logout();
-    enqueueSnackbar("Logout Succssfully")
+    // logout();
+    dispatch(logOutUser())
+    // enqueueSnackbar("Logout Succssfully")
     router.push('/login');
   };
 

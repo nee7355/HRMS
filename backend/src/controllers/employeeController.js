@@ -1,6 +1,7 @@
 import Role from "../models/Role.js";
 import Employee from "../models/Employee.js";
 import { comparePassword, generateToken } from "../services/auth.service.js";
+import { success } from "../utils/response.js";
 
 export const addEmployeeController = async (req, res) => {
 
@@ -129,6 +130,16 @@ export const userLoginController = async (req, res) => {
             success: false,
             message: "Internal server error"
         });
+    }
+}
+
+export const logOutController = async(req, res)=>{
+    try {
+         res.clearCookie("jwtToken");
+
+         return success(res, 200, "Logout successfully");
+    } catch (error) {
+        
     }
 }
 
