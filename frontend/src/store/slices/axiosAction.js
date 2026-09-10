@@ -5,7 +5,7 @@ let baseURL = 'http://localhost:5000/api/v1';
 if(process.env.NODE_ENV==='development'){
     baseURL = 'http://localhost:5000/api/v1';
 }if(process.env.NODE_ENV==='production'){
-    baseURL = 'https://hrms-fziq.onrender.com';
+    baseURL = 'https://hrms-fziq.onrender.com/api/v1';
 }
 
 const api = axios.create({
