@@ -2,8 +2,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import dotenv from "dotenv";
-
-dotenv.config();
+const envFile = `.env.${process.env.NODE_ENV}`;
+dotenv.config({
+    path: envFile
+});
 
 export const hashPassword = async(pass)=>{
     return await bcrypt.hash(pass, 10);

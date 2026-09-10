@@ -1,7 +1,15 @@
 import axios from "axios";
 
+let baseURL = 'http://localhost:5000/api/v1';
+
+if(process.env.NODE_ENV==='development'){
+    baseURL = 'http://localhost:5000/api/v1';
+}if(process.env.NODE_ENV==='production'){
+    baseURL = 'https://hrms-fziq.onrender.com';
+}
+
 const api = axios.create({
-    baseURL: "http://localhost:5000/api/v1",
+    baseURL: baseURL,
     headers: {
         'Content-Type': 'application/json',
     },
