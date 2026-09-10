@@ -5,6 +5,7 @@ import designationReducer from './slices/designationSlice';
 import departmentManagerReducer from './slices/managerSlice';
 import authReducer from './slices/authSllice';
 import attendanceReducer from './slices/attendanceSlice';
+import leaveReducer from './slices/leaveSlice';
 
 const loggerMiddler = (store)=>(next)=>(action)=>{
     console.log(action);
@@ -22,6 +23,7 @@ export const store = configureStore({
         departmentManager: departmentManagerReducer,
         auth: authReducer,
         attendance: attendanceReducer,
+        leave: leaveReducer,
     },
     middleware:(getDefaultMiddleware)=>getDefaultMiddleware().concat(loggerMiddler),
 });

@@ -8,12 +8,12 @@ export const applyLeaveController = async(req, res)=>{
         const userId = req.user._id;
         if(!userId) return failed(res, 401, "Unautherized User");
 
-        const { code, startDate, endDate, reason } = req.body;
+        const { leaveTypeId, startDate, endDate, reason } = req.body;
         
         let totalDays = new Date(endDate)- new Date(startDate);
         totalDays = totalDays/(1000*60*60*24);
 
-        const leaveTypeList = await leaveType.findOne({code: code?.trim().toUpperCase()});
+        const leaveTypeList = await leaveType.findOne({_id: leaveTypeId});
         const leave = {
                 employeeId: userId,
                 totalDays: totalDays,
@@ -28,5 +28,17 @@ export const applyLeaveController = async(req, res)=>{
     } catch (error) {
         console.error("leave apply api", error);
         return failed(res, 401, "Unautherized User", error);
+    }
+}
+
+export const getLeaveTypeController = async(req, res)=>{
+    try {
+        const leaveTypeList = await leaveType.find({});
+
+        return success(res, 200, "", leaveTypeList);
+    } catch (error) {
+        console.error(error);
+                return failed(res, 401, "Unautherized User", error);
+
     }
 }
