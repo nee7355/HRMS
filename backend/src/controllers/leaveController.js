@@ -2,6 +2,7 @@ import leaveType from "../models/leaveType.js";
 import LeaveType from "../models/leaveType.js";
 import { failed, success } from "../utils/response.js";
 import applyLeave from "../models/leave.js";
+import leave from "../models/leave.js";
 
 export const applyLeaveController = async(req, res)=>{
     try {
@@ -34,6 +35,18 @@ export const applyLeaveController = async(req, res)=>{
 export const getLeaveTypeController = async(req, res)=>{
     try {
         const leaveTypeList = await leaveType.find({});
+
+        return success(res, 200, "", leaveTypeList);
+    } catch (error) {
+        console.error(error);
+                return failed(res, 401, "Unautherized User", error);
+
+    }
+}
+export const getLeaveListController = async(req, res)=>{
+    try {
+        const employeeId = req.user._id;
+        const leaveTypeList = await leave.find({employeeId}).populate("leaveTypeId", 'name');
 
         return success(res, 200, "", leaveTypeList);
     } catch (error) {

@@ -13,3 +13,14 @@ export const localTime = (time) => {
         hour12: true
     })
 }
+
+export const formatDateInDMY = (date) =>{
+
+    date = new Date(date);
+    
+ return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  })
+};

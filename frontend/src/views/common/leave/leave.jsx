@@ -38,8 +38,10 @@ import LeaveSummaryCard from "../../components/leave/LeaveSummaryCard";
 import LeaveEmptyState from "../../components/leave/LeaveEmptyState";
 import ApplyLeaveModal from "../../components/modals/ApplyLeaveModal";
 import { useDispatch, useSelector } from "react-redux";
-import { applyLeave, leaveSelector } from "../../../store/slices/leaveSlice";
+import { applyLeave, getLeave, leaveSelector } from "../../../store/slices/leaveSlice";
 import CustomTale from "../../components/CustomTale";
+import { useEffect } from "react";
+import { formatDateInDMY } from "../../components/utils/fn";
 
 // Your existing Apply Leave modal
 // import ApplyLeaveModal from "./ApplyLeaveModal";
@@ -133,11 +135,38 @@ const LeaveTest = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    const { leaveType } = useSelector(leaveSelector);
+    const { leaveType, leave } = useSelector(leaveSelector);
 
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+        // alert("clicked");
+        dispatch(getLeave());
+    },[])
+
+    const dbLeaveData = useMemo(()=>{
+        const leaveClone = structuredClone(leave);
+        
+
+        return leaveClone?.map((l)=>{
+           
+            const start = formatDateInDMY(l.startDate);
+            const end = formatDateInDMY(l.endDate);
+            return {
+                _id: l._id,
+                leaveType: l?.leaveTypeId?.name,
+                duration: `${start} to ${end}`,
+                days: l.totalDays,
+                reason: l.reason,
+                appliedOn: formatDateInDMY(l.createdAt),
+                status: l.status,
+
+            }
+        })
+    },[leave]);
+
     const filteredLeaves = useMemo(() => {
-        return leaveData.filter((leave) => {
+        return dbLeaveData?.filter((leave) => {
             const matchesSearch =
                 leave.leaveType
                     .toLowerCase()
@@ -158,7 +187,7 @@ const LeaveTest = () => {
                 matchesLeaveType
             );
         });
-    }, [search, status, leaveTypeFilter]);
+    }, [search, status, leaveTypeFilter, dbLeaveData]);
 
     const handleClearFilters = () => {
         setSearch("");
@@ -199,7 +228,7 @@ const LeaveTest = () => {
         {
             id: 3,
             header: 'Duration',
-            Cell: (row) => <Typography>{`${row.startDate} to ${row.endDate}`}</Typography>
+            key: 'duration'
         },
         {
             id: 3,

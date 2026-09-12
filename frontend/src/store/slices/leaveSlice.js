@@ -46,6 +46,22 @@ export function applyLeave(data) {
         }
     }
 }
+export function getLeave() {
+    return async (dispatch) => {
+        
+        dispatch(startLoader());
+        try {
+            const res = await getAxios('/leave')
+            
+            dispatch(setLeave(res.data.data))
+            // enqueueSnackbar(res.data.message);
+        } catch (error) {
+            console.log(error.response.data.message);
+        } finally {
+            dispatch(stopLoader());
+        }
+    }
+}
 
 export function getLeaveType() {
     return async (dispatch) => {
