@@ -8,7 +8,7 @@ import LeaveTest from './leave';
 
 const Leave = () => {
   const [openApplyModal, setOpenApplyModal] = useState(false);
-  const { leaveType } = useSelector(leaveSelector);
+  // const { leaveType } = useSelector(leaveSelector);
 
   const dispatch = useDispatch();
 
@@ -16,9 +16,6 @@ const Leave = () => {
     setOpenApplyModal(true);
   }
 
-  useEffect(() => {
-    dispatch(getLeaveType());
-  }, []);
 
   const submitLeaveApply = (data) => {
     if (!data) return;
@@ -39,7 +36,7 @@ const Leave = () => {
 
       <LeaveTest/>
 
-     {openApplyModal&& <ApplyLeaveModal open={openApplyModal} onClose={() => setOpenApplyModal(false)} onSubmitLeave={submitLeaveApply} leaveTypes={leaveType} />}
+     {openApplyModal&& <ApplyLeaveModal open={openApplyModal} onClose={() => setOpenApplyModal(false)} onSubmitLeave={submitLeaveApply} />}
     </>
   )
 }

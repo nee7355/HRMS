@@ -21,8 +21,8 @@ import {
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { IconX } from '@tabler/icons-react';
-import { getLeaveType, leaveSelector } from '../../../store/slices/leaveSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { getLeaveType, leaveSelector } from '../../../store/slices/leaveSlice';
 
 const inputSx = {
   '& .MuiOutlinedInput-root': {
@@ -52,7 +52,7 @@ const reasonSchema = {
 const ApplyLeaveModal = ({
   open,
   onClose,
-  // leaveTypes = [],
+//   leaveTypes = [],
   onSubmitLeave,
   isProcessing = false,
   registerError = ''
@@ -85,11 +85,9 @@ const ApplyLeaveModal = ({
   useEffect(() => {
     dispatch(getLeaveType());
   }, []);
-  /*  
+  /*
    * Calculate total leave days
    */
-
-
   const totalDays = useMemo(() => {
     if (!startDate || !endDate) {
       return 0;
@@ -164,7 +162,7 @@ const ApplyLeaveModal = ({
       </DialogTitle>
       <Divider />
       <DialogContent>
-
+      
 
         <form
           id='applyLeave-form'
@@ -201,7 +199,7 @@ const ApplyLeaveModal = ({
                       -- Select Leave Type --
                     </MenuItem>
 
-                    {leaveType.map((leave) => (
+                    {leaveType?.map((leave) => (
                       <MenuItem
                         key={leave._id}
                         value={leave._id}

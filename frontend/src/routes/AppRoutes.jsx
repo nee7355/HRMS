@@ -12,6 +12,7 @@ import Box from '@mui/material/Box'
 import Team from '../views/pages/manager/team'
 import Performance from '../views/pages/manager/performance'
 import Designation from '../views/pages/admin/Designation'
+import RoleLeve from './RoleLeve'
 
 const AppRoutes = [
     {
@@ -52,10 +53,14 @@ const AppRoutes = [
                     },
                     {
                         path: '/leave',
-                        element: (
-                            <RoleRoute role={['ADMIN', 'HR', 'MANAGER', 'USER']}>
-                                <Leave/>
-                            </RoleRoute>
+                        element: (<>
+                            {/* <RoleRoute role={['ADMIN', 'HR', 'MANAGER', 'USER']}>
+                                 <Leave/>
+                             </RoleRoute> */}
+
+                            <RoleLeve/>
+                            </>
+                            
                         )
                     },
                     {

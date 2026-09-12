@@ -13,12 +13,12 @@ import { getNestedValue } from './utils/fn';
 
 
 const CustomTale = ({
-    column=[],
-    data=[],
+    column = [],
+    data = [],
     enablePagination = true,
     page = 1,
     setPage,
-    totalPages=1,
+    totalPages = 1,
     // setTotalPages,
     itemPerPage = 10,
     containerSX,
@@ -31,9 +31,9 @@ const CustomTale = ({
     // const [page, setPge] = useState(1);
     // const [count, setCount] = useState(1);
 
-    const columnKeys = useMemo(()=>{
-        return column.map(item=>item.key);
-    },[column]);
+    const columnKeys = useMemo(() => {
+        return column.map(item => item.key);
+    }, [column]);
 
     // const currentPageData = useMemo(()=>{
     //     const totalPages = Math.ceil(data.length/itemPerPage);
@@ -45,58 +45,71 @@ const CustomTale = ({
 
     // },[data]);
 
-  return (
-      <>
-          <Stack direction={'column'} spacing={2}>
-            <Box sx={{
-                maxHeight: 'calc(100vh - 166px)',
-                overflowY: 'auto',
-                ...containerSX
-            }}>
-              <table style={{
-                  border: '1px solid #ddd',
-                  ...tableSX
-                  
-              }}
-                  className='custom-table'
-              >
-                  <thead>
-                      <tr>
-                          {column.map((cell) => <th>{cell.header}</th>)}
-                      </tr>
-                  </thead>
-                      <tbody style={{...tableBodySX}}>
-                          {
-                              data.map((row, index) =>
-                                  <tr style={{...tableBodyRowSX}}>
-                                      {column.map(col => {
-                                        
-                                       const value = getNestedValue(row, col.key);
-                                          return <td style={{...tableBodyTdSX}}>{col.Cell ? col.Cell(row, index) : value}</td>
-                                      })}
-                                  </tr>
-                              )}
-                      </tbody>
-              </table>
-            </Box>
-              {enablePagination && totalPages>1&& <Box>
-                  <Pagination 
-                    page={page}
-                    count={totalPages} 
-                    variant="outlined" 
-                    shape="rounded" 
-                    sx={{
-                        '& .MuiPagination-ul':{
-                            justifyContent: 'end'
-                        }
+    return (
+        <>
+            <Stack direction={'column'} spacing={2}>
+                <Box sx={{
+                    maxHeight: 'calc(100vh - 166px)',
+                    overflowY: 'auto',
+                    ...containerSX
+                }}>
+                    <table style={{
+                        border: '1px solid #ddd',
+                        ...tableSX
+
                     }}
-                    onChange={(e, value)=>setPage(value)}
-                    size = 'small'
+                        className='custom-table'
+                    >
+                        <thead>
+                            <tr>
+                                {column.map((cell) => (
+                                    <th key={cell.id}>
+                                        {cell.header}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {data.map((row, index) => (
+                                <tr key={row._id || row.id || index}>
+                                    {column.map((col) => {
+                                        const value = getNestedValue(
+                                            row,
+                                            col.key
+                                        );
+
+                                        return (
+                                            <td key={col.id}>
+                                                {col.Cell
+                                                    ? col.Cell(row, index)
+                                                    : value}
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </Box>
+                {enablePagination && totalPages > 1 && <Box>
+                    <Pagination
+                        page={page}
+                        count={totalPages}
+                        variant="outlined"
+                        shape="rounded"
+                        sx={{
+                            '& .MuiPagination-ul': {
+                                justifyContent: 'end'
+                            }
+                        }}
+                        onChange={(e, value) => setPage(value)}
+                        size='small'
                     />
-              </Box>}
-          </Stack>
-      </>
-  )
+                </Box>}
+            </Stack>
+        </>
+    )
 }
 
 export default CustomTale
