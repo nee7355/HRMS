@@ -20,7 +20,13 @@ const CustomTale = ({
     setPage,
     totalPages=1,
     // setTotalPages,
-    itemPerPage = 10
+    itemPerPage = 10,
+    containerSX,
+    tableSX,
+    tableBodySX,
+    tableBodyRowSX,
+    tableBodyTdSX,
+
 }) => {
     // const [page, setPge] = useState(1);
     // const [count, setCount] = useState(1);
@@ -43,11 +49,13 @@ const CustomTale = ({
       <>
           <Stack direction={'column'} spacing={2}>
             <Box sx={{
-                height: 'calc(100vh - 166px)',
-                overflowY: 'auto'
+                maxHeight: 'calc(100vh - 166px)',
+                overflowY: 'auto',
+                ...containerSX
             }}>
               <table style={{
                   border: '1px solid #ddd',
+                  ...tableSX
                   
               }}
                   className='custom-table'
@@ -57,14 +65,14 @@ const CustomTale = ({
                           {column.map((cell) => <th>{cell.header}</th>)}
                       </tr>
                   </thead>
-                      <tbody>
+                      <tbody style={{...tableBodySX}}>
                           {
                               data.map((row, index) =>
-                                  <tr>
+                                  <tr style={{...tableBodyRowSX}}>
                                       {column.map(col => {
                                         
                                        const value = getNestedValue(row, col.key);
-                                          return <td>{col.Cell ? col.Cell(row, index) : value}</td>
+                                          return <td style={{...tableBodyTdSX}}>{col.Cell ? col.Cell(row, index) : value}</td>
                                       })}
                                   </tr>
                               )}

@@ -39,6 +39,7 @@ import LeaveEmptyState from "../../components/leave/LeaveEmptyState";
 import ApplyLeaveModal from "../../components/modals/ApplyLeaveModal";
 import { useDispatch, useSelector } from "react-redux";
 import { applyLeave, leaveSelector } from "../../../store/slices/leaveSlice";
+import CustomTale from "../../components/CustomTale";
 
 // Your existing Apply Leave modal
 // import ApplyLeaveModal from "./ApplyLeaveModal";
@@ -132,9 +133,9 @@ const LeaveTest = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-     const { leaveType } = useSelector(leaveSelector);
+    const { leaveType } = useSelector(leaveSelector);
 
-     const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const filteredLeaves = useMemo(() => {
         return leaveData.filter((leave) => {
             const matchesSearch =
@@ -144,13 +145,12 @@ const LeaveTest = () => {
                 leave.reason
                     .toLowerCase()
                     .includes(search.toLowerCase());
-
             const matchesStatus =
                 status === "ALL" || leave.status === status;
 
             const matchesLeaveType =
-                leaveType === "ALL" ||
-                leave.leaveType === leaveType;
+                leaveTypeFilter === "ALL" ||
+                leave.leaveType === leaveTypeFilter;
 
             return (
                 matchesSearch &&
@@ -170,20 +170,98 @@ const LeaveTest = () => {
     const handleChangePage = (_, newPage) => {
         setPage(newPage);
     };
-  const submitLeaveApply = (data) => {
-    
-    if (!data) return;
-    try {
-      dispatch(applyLeave(data));
-      setOpenApplyModal(false);
-    } catch (error) {
+    const submitLeaveApply = (data) => {
 
+        if (!data) return;
+        try {
+            dispatch(applyLeave(data));
+            setOpenApplyModal(false);
+        } catch (error) {
+
+        }
     }
-  }
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+    const column = useMemo(() => [
+        {
+            id: 1,
+            header: 'Sr No',
+            Cell: (row, index) => index + 1
+        },
+        {
+            id: 2,
+            header: 'Leave Type',
+            key: 'leaveType',
+        },
+        {
+            id: 3,
+            header: 'Duration',
+            Cell: (row) => <Typography>{`${row.startDate} to ${row.endDate}`}</Typography>
+        },
+        {
+            id: 3,
+            header: 'Days',
+            key: 'days',
+        },
+        {
+            id: 3,
+            header: 'Reason',
+            key: 'reason',
+        },
+        {
+            id: 3,
+            header: 'Applied On',
+            key: 'appliedOn',
+        },
+        {
+            id: 3,
+            header: 'Status',
+            Cell: (row) => <Chip
+                label={
+                    row.status
+                }
+                color={getStatusColor(
+                    row.status
+                )}
+                size="small"
+                variant="soft"
+            />
+        },
+        {
+            id: 3,
+            header: 'Action',
+            Cell: (row) => <>
+                {row.status ===
+                    "PENDING" && (
+                        <Button
+                            size="small"
+                            color="error"
+                            startIcon={
+                                <IconX
+                                    size={
+                                        16
+                                    }
+                                />
+                            }
+                        >
+                            Cancel
+                        </Button>
+                    )}
+
+                {row.status !==
+                    "PENDING" && (
+                        <Button
+                            size="small"
+                        >
+                            View
+                        </Button>
+                    )}
+            </>
+        },
+    ], [])
 
     return (
         <Box>
@@ -403,14 +481,14 @@ const LeaveTest = () => {
                                 {(search ||
                                     status !== "ALL" ||
                                     leaveTypeFilter !== "ALL") && (
-                                    <IconButton
-                                        onClick={handleClearFilters}
-                                        size="small"
-                                        title="Clear filters"
-                                    >
-                                        <IconFilterOff size={19} />
-                                    </IconButton>
-                                )}
+                                        <IconButton
+                                            onClick={handleClearFilters}
+                                            size="small"
+                                            title="Clear filters"
+                                        >
+                                            <IconFilterOff size={19} />
+                                        </IconButton>
+                                    )}
                             </Stack>
                         </Stack>
                     </Box>
@@ -420,8 +498,13 @@ const LeaveTest = () => {
                     {/* =========================================
                         TABLE
                     ========================================== */}
-
-                    <TableContainer>
+                    <CustomTale 
+                    column={column} 
+                    data={filteredLeaves} 
+                    containerSX={{maxHeight: 'calc(100vh - 440px)'}}
+                    tableSX={{border:'none'}}
+                    />
+                    {/* <TableContainer>
                         <Table>
                             <TableHead>
                                 <TableRow>
@@ -461,7 +544,7 @@ const LeaveTest = () => {
                                         .slice(
                                             page * rowsPerPage,
                                             page * rowsPerPage +
-                                                rowsPerPage
+                                            rowsPerPage
                                         )
                                         .map((leave) => (
                                             <TableRow
@@ -491,16 +574,16 @@ const LeaveTest = () => {
 
                                                         {leave.startDate !==
                                                             leave.endDate && (
-                                                            <Typography
-                                                                variant="caption"
-                                                                color="text.secondary"
-                                                            >
-                                                                to{" "}
-                                                                {
-                                                                    leave.endDate
-                                                                }
-                                                            </Typography>
-                                                        )}
+                                                                <Typography
+                                                                    variant="caption"
+                                                                    color="text.secondary"
+                                                                >
+                                                                    to{" "}
+                                                                    {
+                                                                        leave.endDate
+                                                                    }
+                                                                </Typography>
+                                                            )}
                                                     </Box>
                                                 </TableCell>
 
@@ -511,7 +594,7 @@ const LeaveTest = () => {
                                                     >
                                                         {leave.days}{" "}
                                                         {leave.days ===
-                                                        1
+                                                            1
                                                             ? "Day"
                                                             : "Days"}
                                                     </Typography>
@@ -566,29 +649,29 @@ const LeaveTest = () => {
                                                 <TableCell align="right">
                                                     {leave.status ===
                                                         "PENDING" && (
-                                                        <Button
-                                                            size="small"
-                                                            color="error"
-                                                            startIcon={
-                                                                <IconX
-                                                                    size={
-                                                                        16
-                                                                    }
-                                                                />
-                                                            }
-                                                        >
-                                                            Cancel
-                                                        </Button>
-                                                    )}
+                                                            <Button
+                                                                size="small"
+                                                                color="error"
+                                                                startIcon={
+                                                                    <IconX
+                                                                        size={
+                                                                            16
+                                                                        }
+                                                                    />
+                                                                }
+                                                            >
+                                                                Cancel
+                                                            </Button>
+                                                        )}
 
                                                     {leave.status !==
                                                         "PENDING" && (
-                                                        <Button
-                                                            size="small"
-                                                        >
-                                                            View
-                                                        </Button>
-                                                    )}
+                                                            <Button
+                                                                size="small"
+                                                            >
+                                                                View
+                                                            </Button>
+                                                        )}
                                                 </TableCell>
                                             </TableRow>
                                         ))
@@ -608,11 +691,11 @@ const LeaveTest = () => {
                                 )}
                             </TableBody>
                         </Table>
-                    </TableContainer>
+                    </TableContainer> */}
 
                     {/* PAGINATION */}
 
-                    {filteredLeaves.length > 0 && (
+                    {/* {filteredLeaves.length > 0 && (
                         <TablePagination
                             component="div"
                             count={filteredLeaves.length}
@@ -628,11 +711,11 @@ const LeaveTest = () => {
                                 25
                             ]}
                         />
-                    )}
+                    )} */}
                 </CardContent>
             </Card>
 
-     {openApplyModal&& <ApplyLeaveModal open={openApplyModal} onClose={() => setOpenApplyModal(false)} onSubmitLeave={submitLeaveApply} leaveTypes={leaveType} />}
+            {openApplyModal && <ApplyLeaveModal open={openApplyModal} onClose={() => setOpenApplyModal(false)} onSubmitLeave={submitLeaveApply} leaveTypes={leaveType} />}
 
 
         </Box>
