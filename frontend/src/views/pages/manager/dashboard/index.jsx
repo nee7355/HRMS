@@ -1,5 +1,5 @@
 import React from 'react'
-import MarkAttendance from '../../../components/dashboard/MarkAttendance'
+import AttendanceWidget from '../../../components/dashboard/AttendanceWidget'
 import { Grid } from '@mui/material';
 import StatCard from '../../../components/dashboard/StateCard';
 import {
@@ -11,74 +11,77 @@ import {
   UserPlus,
   Receipt,
 } from "lucide-react";
+import ManagerDashboard from './ManagerDashboard';
 
-  const stats = [
-    {
-      title: "Team Size",
-      value: 124,
-      icon: Users,
-      color: "primary",
-      change: 8,
-      changeText: "this month",
-    },
+const stats = [
+  {
+    title: "Team Size",
+    value: 124,
+    icon: Users,
+    color: "primary",
+    change: 8,
+    changeText: "this month",
+  },
 
-    // {
-    //   title: "Departments",
-    //   value: 8,
-    //   icon: Building2,
-    //   color: "secondary",
-    //   change: 0,
-    //   changeText: "this month",
-    //   changeType: "same",
-    // },
+  // {
+  //   title: "Departments",
+  //   value: 8,
+  //   icon: Building2,
+  //   color: "secondary",
+  //   change: 0,
+  //   changeText: "this month",
+  //   changeType: "same",
+  // },
 
-    {
-      title: "Present Today",
-      value: 108,
-      icon: UserCheck,
-      color: "success",
-      change: 5,
-      changeText: "today",
-    },
+  {
+    title: "Present Today",
+    value: 108,
+    icon: UserCheck,
+    color: "success",
+    change: 5,
+    changeText: "today",
+  },
 
-    {
-      title: "On Leave",
-      value: 12,
-      icon: UserMinus,
-      color: "warning",
-      change: 2,
-      changeText: "today",
-    },
-    {
-      title: "Absent",
-      value: 12,
-      icon: UserMinus,
-      color: "error",
-      change: 2,
-      changeText: "today",
-    },
-  ];
+  {
+    title: "On Leave",
+    value: 12,
+    icon: UserMinus,
+    color: "warning",
+    change: 2,
+    changeText: "today",
+  },
+  {
+    title: "Absent",
+    value: 12,
+    icon: UserMinus,
+    color: "error",
+    change: 2,
+    changeText: "today",
+  },
+];
 
 const Dashboard = () => {
   return (
-    <><Grid container spacing={2} mb={2}>
-      <Grid size={{ xs: 12,}}>
-            <MarkAttendance/>
-          </Grid>
-      
+    <>
+    {/* <Grid container spacing={2} mb={2}>
+      <Grid size={{ xs: 12, }}>
+        <AttendanceWidget />
+      </Grid>
+
       {stats.map((stat) => (
-          <Grid
-            key={stat.title}
-            size={{
-              xs: 12,
-              sm: 6,
-              md: 3,
-            }}
-          >
-            <StatCard {...stat} />
-          </Grid>
-        ))}
+        <Grid
+          key={stat.title}
+          size={{
+            xs: 12,
+            sm: 6,
+            md: 3,
+          }}
+        >
+          <StatCard {...stat} />
         </Grid>
+      ))}
+    </Grid> */}
+    <ManagerDashboard/>
     </>
   )
 }

@@ -72,7 +72,7 @@ export default function Layout() {
         >
           <Breadcrumbs />
         </Box>
-        <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 2 } }}>
+        <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 2 } }} style={{maxHeight: 'calc(100vh - 124px)', overflow: 'auto'}}>
           <Outlet />
         </Container>
       </Box>

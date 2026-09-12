@@ -14,7 +14,7 @@ import { localTime } from '../utils/fn'
 import Divider from '@mui/material/Divider'
 import { authSelector } from '../../../store/slices/authSllice'
 
-const MarkAttendance = () => {
+const AttendanceWidget = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
     const [workingTime, setWorkingTime] = useState("0hr, 0m 0s")
     const { attendance } = useSelector(attendanceSelector);
@@ -126,9 +126,8 @@ const MarkAttendance = () => {
             <PresentationCard cardSx={{ width: '100%' }}>
                 <Box sx={{ textAlign: 'center' }}>
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                        <Typography>My Attendance</Typography>
-                        <Typography>Today</Typography>
-
+                        <Typography lineHeight={1}>My Attendance</Typography>
+                        <Typography lineHeight={1}>Today</Typography>
                     </Stack>
                     {/* <Typography variant="h3" fontWeight={'bold'} color="text.secondary">
                       {currentTime.toLocaleTimeString("en-IN",{
@@ -145,11 +144,10 @@ const MarkAttendance = () => {
                         <Typography variant='h3' fontWeight={'bold'}>You haven't checked in yet</Typography>
                         <Typography>Please check in to mark your attendance today.</Typography>
                         <Button variant='contained' color='success' onClick={() => handleCheckInOut('checkIn')} sx={{ mt: '24px' }}>{'CheckIn'}</Button>
-
                     </Stack>
                 </Stack>}
 
-                {attendaceSession?.checkIn && !attendaceSession?.checkOut && <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={3} py={3}>
+                {attendaceSession?.checkIn && !attendaceSession?.checkOut && <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={3} >
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={3} >
                         <IconCircleCheck />
                         <Box>
@@ -161,7 +159,7 @@ const MarkAttendance = () => {
                         <Box sx={{
                             border: '1px solid #ddd',
                             borderRadius: '8px',
-                            padding: '16px',
+                            padding: '8px',
                             display: 'flex',
                             justifyContent: 'space-between'
                         }}>
@@ -257,4 +255,4 @@ const MarkAttendance = () => {
     )
 }
 
-export default MarkAttendance
+export default AttendanceWidget

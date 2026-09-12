@@ -15,7 +15,7 @@ import {
 
 
 
-import MarkAttendance from "../../components/dashboard/MarkAttendance";
+import AttendanceWidget from "../../components/dashboard/AttendanceWidget";
 import LeaveOverview from "../../components/dashboard/LeaveOverview";
 import RecentActivities from "../../components/dashboard/RecentActivities";
 import StatCard from "../../components/dashboard/StateCard";
@@ -112,7 +112,7 @@ const Dashboard = () => {
             xs: 12,
           }}
         >
-          <MarkAttendance/>
+          <AttendanceWidget/>
         </Grid>
         {stats.map((stat) => (
           <Grid

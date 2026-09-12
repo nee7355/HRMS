@@ -1,9 +1,15 @@
 import React from 'react'
+import Attendance from './Attendance'
+import { useSelector } from 'react-redux'
+import { authSelector } from '../../../store/slices/authSllice'
 
-const Attendance = () => {
+const index = () => {
+  const {user} = useSelector(authSelector);
   return (
-    <div>Attendance</div>
+    <>
+    <Attendance role={user?.role}/>
+    </>
   )
 }
 
-export default Attendance
+export default index

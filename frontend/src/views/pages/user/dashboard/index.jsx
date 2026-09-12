@@ -1,5 +1,5 @@
 import React from 'react'
-import MarkAttendance from '../../../components/dashboard/MarkAttendance'
+import AttendanceWidget from '../../../components/dashboard/AttendanceWidget'
 import { Grid } from '@mui/material';
 import StatCard from '../../../components/dashboard/StateCard';
 import {
@@ -55,7 +55,7 @@ const Dashboard = () => {
   return (
     <><Grid container spacing={2} mb={2}>
       <Grid size={{ xs: 12,}}>
-            <MarkAttendance/>
+            <AttendanceWidget/>
           </Grid>
       
       {stats.map((stat) => (
