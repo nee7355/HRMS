@@ -26,7 +26,19 @@ export const getManagerController = async(req, res)=>{
     //     department: departmentId,
     //     role: role[0]._id
     // })
- console.log("manager..............................",manager);
 
     return success(res, 200, "", manager);
+}
+
+export const getMyTeam = async(req, res)=>{
+    try {
+        const employeeId = req.user._id;
+
+        const team = await Employee.find({manager: new mongoose.Types.ObjectId(employeeId)});
+        return success(res, 200, null, team);
+        
+    } catch (error) {
+        console.error(error);
+        return failed(res, 500, "Something went wrong");
+    }
 }

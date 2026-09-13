@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
     Box,
@@ -16,6 +16,8 @@ import {
     IconUsers
 } from "@tabler/icons-react";
 import CustomTale from "../../../components/CustomTale";
+import { useDispatch, useSelector } from "react-redux";
+import { departmentManagerSelector, getMyTeam } from "../../../../store/slices/managerSlice";
 
 // import CustomTale from "../../components/CustomTale";
 
@@ -24,8 +26,14 @@ const MyTeam = () => {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
 
-    const [totalPages, setTotalPages] =
-        useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const {team} = useSelector(departmentManagerSelector);
+        
+        const dispatch = useDispatch();
+
+        useEffect(()=>{
+            dispatch(getMyTeam());
+        },[])
 
     const employees = [
         {
@@ -281,7 +289,7 @@ const MyTeam = () => {
 
                     <CustomTale
                         column={columns}
-                        data={employees}
+                        data={team}
                         enablePagination={
                             totalPages > 1
                         }

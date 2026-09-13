@@ -65,7 +65,7 @@ const employeeSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    managerId: {
+    manager: {
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Employee'
     },
@@ -77,6 +77,11 @@ const employeeSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Designation'
     },
+    status:{
+        type: String,
+        enum: ["ACTIVE", "INACTIVE"],
+        default: "ACTIVE"
+    }
 
 },{
     timestamps: true,

@@ -33,9 +33,9 @@ export const addDesignationController = async(req, res)=>{
         const {name, description, departmentId} = req.body;
         if(!name) return failed(res, 400, "Name is required");
     
-        const isExist = await Designation.findOne({name: name});
+        // const isExist = await Designation.findOne({name: name});
 
-        if(isExist) return failed(res, 400, `${name} is already exist`);
+        // if(isExist) return failed(res, 400, `${name} is already exist`);
     
 
         const designation = new Designation({name, description, departmentId});

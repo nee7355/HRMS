@@ -84,6 +84,16 @@ const Employee = () => {
       key: 'role.name'
     },
     {
+      id: 'a',
+      header: 'Department',
+      key: 'department.name'
+    },
+    {
+      id: 'aa',
+      header: 'Manager',
+      key: 'manager'
+    },
+    {
       id: 5,
       header: 'Action',
       Cell: (row) => <Box>

@@ -6,7 +6,7 @@ import { success } from "../utils/response.js";
 export const addEmployeeController = async (req, res) => {
 
     try {
-        const { firstName, lastName, dialCode, email, phone, salary, country, city, address, role, password } = req.body;
+        const { firstName, lastName, dialCode, email, phone, salary, country, city, address, role, password, designation, department, userId, manager } = req.body;
 
         const isUserExist = await Employee.findOne({ email: email.trim().toLowerCase() });
         if (isUserExist) return res.status(409).json({
@@ -22,7 +22,7 @@ export const addEmployeeController = async (req, res) => {
         });
 
         const data = {
-            firstName, lastName, dialCode, email, phone, salary, country, city, address, password,
+            firstName, lastName, dialCode, email, phone, salary, country, city, address, password, designation, department, userId, manager,
             role: userRole._id
         };
 
@@ -212,7 +212,10 @@ export const employeeController = async (req, res) => {
 
         const skip = (page - 1) * limit;
 
-        const employees = await Employee.find(filter).populate('role', 'name').skip(skip).limit(limit);
+        const employees = await Employee.find(filter).populate([
+            {path: 'role', select:"name"},
+            {path: 'department', select:"name"},
+        ]).skip(skip).limit(limit);
 
         const totalUsers = await Employee.countDocuments(filter);
         const totalPages = Math.ceil(totalUsers / limit);
@@ -251,13 +254,13 @@ export const editEmployeeController = async (req, res) => {
             role: role[0]._id
         }
 
-        console.log("role.........", role)
-        console.log("userInput.........", userInput);
 
         const updatedUser = await Employee.findByIdAndUpdate(id, userInput, {
-            // new: true,
+            new: true,
             runValidators: true
         });
+        console.log("req.body..........", req.body)
+        console.log("updatedUser..........", updatedUser)
         if (!updatedUser) {
             return res.status(404).json({
                 success: false,

@@ -4,6 +4,7 @@ import { getAxios } from "./axiosAction";
 const initialState = {
     mangerLoader: false,
     departmentManager: [],
+    team:[],
 }
 const managerSlice = createSlice({
     name: 'manager',
@@ -17,11 +18,14 @@ const managerSlice = createSlice({
         },
         setDepartmentManager:(state,{payload})=>{
             state.departmentManager = payload;
-        }
+        },
+        setTeam:(state,{payload})=>{
+            state.team = payload;
+        },
     }
 });
 
-export const {startLoader, stopLoader, setDepartmentManager}  = managerSlice.actions;
+export const {startLoader, stopLoader, setDepartmentManager, setTeam}  = managerSlice.actions;
 export const departmentManagerSelector = (state)=>state.departmentManager;
 
 export default managerSlice.reducer;
@@ -37,6 +41,22 @@ export function fetchMangerByDepartment(departmentId, role){
             }
         } catch (error) {
             console.error('Error fetching manager by department:', error);
+        } finally {
+            dispatch(stopLoader());
+        }
+    }
+}
+export function getMyTeam(){
+    return async(dispatch)=>{
+        dispatch(startLoader());
+        try {
+            
+            const res = await getAxios(`/manager/team`);
+            if (res.statusText === 'OK') {
+                dispatch(setTeam(res.data.data));
+            }
+        } catch (error) {
+            console.error('Error fetching manager team:', error);
         } finally {
             dispatch(stopLoader());
         }

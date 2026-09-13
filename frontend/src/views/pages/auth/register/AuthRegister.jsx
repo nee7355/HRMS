@@ -47,7 +47,7 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
   const [isProcessing, setIsProcessing] = useState(false);
   const [registerError, setRegisterError] = useState('');
   const {departments} = useSelector(deparmentSelector)
-  const {designation} = useSelector(designationSelector)
+  const { designation, loading: designationLoading } = useSelector(designationSelector)
   const {departmentManager} = useSelector(departmentManagerSelector)
 
    const { enqueueSnackbar } = useSnackbar();
@@ -69,22 +69,32 @@ export default function AuthRegister({ data, inputSx, action="add", handleClose 
   const selectedDepartment = watch('department', '');
   const selectedDesignation = watch('designation', '');
 
-  useEffect(()=>{
-    if(!data) return;
-      Object.entries(data).forEach(([key, value])=>{
-        const fieldValue = key === 'role' && value && typeof value === 'object'
-          ? value.name
-          : value;
+ 
+useEffect(() => {
+  if (!data) return;
 
-        setValue(key, fieldValue,{
-          shouldDirty: true,
-          shouldValidate: true
-        })
-      })
-  },[data, setValue]);
+  Object.entries(data).forEach(([key, value]) => {
+    let fieldValue = value;
 
+    if (key === "role" && value && typeof value === "object") {
+      fieldValue = value.name;
+    } else if (
+      ["department", "designation", "manager"].includes(key) &&
+      value &&
+      typeof value === "object"
+    ) {
+      fieldValue = value._id;
+    }
+
+    setValue(key, fieldValue, {
+      shouldDirty: false,
+      shouldValidate: false,
+    });
+  });
+}, [data, setValue]);
+//  console.log('data,,,,,,,,,,,,,,,,,,,,,,', data)
   const onSubmit = async(formData) => {
-
+  
     try {
       
       setIsProcessing(true);
@@ -148,6 +158,8 @@ useEffect(()=>{
   }, [dispatch, selectedDepartment]);
 
   useEffect(() => {
+    if (designationLoading) return;
+
     if (!selectedDepartment) {
       setValue('designation', '');
       return;
@@ -156,13 +168,13 @@ useEffect(()=>{
     if (selectedDesignation && !designationlist.some((item) => item._id === selectedDesignation)) {
       setValue('designation', '');
     }
-  }, [selectedDepartment, selectedDesignation, designationlist, setValue]);
+  }, [designationLoading, selectedDepartment, selectedDesignation, designationlist, setValue]);
 
   useEffect(()=>{
         dispatch(fetchMangerByDepartment(selectedDepartment ));
   }, [selectedDepartment])
   
-  console.log(departmentManager)
+  // console.log(departmentManager)
   return (
     <form onSubmit={handleSubmit(onSubmit, onInvalid)} autoComplete="off">
       <Grid container rowSpacing={2} columnSpacing={1.5}>
