@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development&& nodemon src/server.js",
     "start": "set NODE_ENV=production&& node src/server.js",
-    "seed": "node src/seeders/leaveTypeSeeder.js",
+    "seed": "set NODE_ENV=development&& node src/seeders/updateAllPass.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "node inspect src/server.js"
   },

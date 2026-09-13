@@ -18,6 +18,8 @@ import {
 import CustomTale from "../../components/CustomTale";
 import LeaveRequestDetails from "./LeaveRequestDetails";
 import LeaveStatus from "../../components/leave/leaveStatusChip";
+import { useDispatch, useSelector } from "react-redux";
+import { departmentManagerSelector, getLeaveRequest } from "../../../store/slices/managerSlice";
 
 const TeamLeaveRequests = () => {
     const [search, setSearch] = useState("");
@@ -37,91 +39,21 @@ const TeamLeaveRequests = () => {
     const [loading, setLoading] = useState(false);
     const [actionLoading, setActionLoading] =
         useState(false);
+    
+    const {leaveRequest} = useSelector(departmentManagerSelector);
 
+        const dispatch = useDispatch();
+
+        useEffect(()=>{
+            dispatch(getLeaveRequest());
+        },[])
     /*
      * Replace this with your API call.
      */
-    const fetchTeamLeaves = async () => {
-        try {
-            setLoading(true);
-
-            /*
-            const response = await getTeamLeaves({
-                page,
-                limit: 10,
-                search,
-                status
-            });
-
-            setLeaves(response.data.leaves);
-            setTotalPages(response.data.totalPages);
-            */
-
-            // Temporary data for UI
-            const data = [
-                {
-                    id: "1",
-                    employee: {
-                        firstName: "Rahul",
-                        lastName: "Sharma",
-                        designation: "Frontend Developer"
-                    },
-                    leaveType: "Casual Leave",
-                    startDate: "18 Sep 2026",
-                    endDate: "20 Sep 2026",
-                    days: 3,
-                    appliedOn: "12 Sep 2026",
-                    reason: "Family function",
-                    status: "PENDING"
-                },
-                {
-                    id: "2",
-                    employee: {
-                        firstName: "Priya",
-                        lastName: "Singh",
-                        designation: "Backend Developer"
-                    },
-                    leaveType: "Sick Leave",
-                    startDate: "15 Sep 2026",
-                    endDate: "15 Sep 2026",
-                    days: 1,
-                    appliedOn: "11 Sep 2026",
-                    reason: "Not feeling well",
-                    status: "PENDING"
-                },
-                {
-                    id: "3",
-                    employee: {
-                        firstName: "Amit",
-                        lastName: "Kumar",
-                        designation: "UI Developer"
-                    },
-                    leaveType: "Earned Leave",
-                    startDate: "20 Sep 2026",
-                    endDate: "22 Sep 2026",
-                    days: 3,
-                    appliedOn: "08 Sep 2026",
-                    reason: "Personal work",
-                    status: "APPROVED"
-                }
-            ];
-
-            setLeaves(data);
-            setTotalPages(1);
-
-        } catch (error) {
-            console.error(
-                "Error fetching team leaves:",
-                error
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
 
     useEffect(() => {
-        fetchTeamLeaves();
-    }, [page, status]);
+        setLeaves(leaveRequest)
+    }, [page, status, leaveRequest]);
 
     const handleSearch = () => {
         setPage(1);
@@ -192,22 +124,22 @@ const TeamLeaveRequests = () => {
         {
             id: "employee",
             header: "Employee",
-            key: "employee",
+            key: "employeeId",
             Cell: (row) => (
                 <Box>
                     <Typography
                         variant="body2"
                         fontWeight={600}
                     >
-                        {row.employee?.firstName}{" "}
-                        {row.employee?.lastName}
+                        {row.employeeId?.firstName}{" "}
+                        {row.employeeId?.lastName}
                     </Typography>
 
                     <Typography
                         variant="caption"
                         color="text.secondary"
                     >
-                        {row.employee?.designation}
+                        {row.employeeId?.designation}
                     </Typography>
                 </Box>
             )
@@ -215,7 +147,7 @@ const TeamLeaveRequests = () => {
         {
             id: "leaveType",
             header: "Leave Type",
-            key: "leaveType"
+            key: "leaveTypeId.name"
         },
         {
             id: "duration",
@@ -242,12 +174,12 @@ const TeamLeaveRequests = () => {
         {
             id: "days",
             header: "Days",
-            key: "days"
+            key: "totalDays"
         },
         {
             id: "appliedOn",
             header: "Applied On",
-            key: "appliedOn"
+            key: "createdAt"
         },
         {
             id: "status",

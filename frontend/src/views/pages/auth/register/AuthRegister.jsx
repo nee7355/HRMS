@@ -373,7 +373,7 @@ useEffect(()=>{
           {errors.manager?.message && <FormHelperText error>{errors.manager?.message}</FormHelperText>}
         </Grid>
 
-       {action==='add' &&<><Grid size={{ xs: 12, sm: 6 }}>
+       {<><Grid size={{ xs: 12, sm: 6 }}>
           <InputLabel>Password</InputLabel>
           <OutlinedInput
             {...register('password', passwordSchema)}

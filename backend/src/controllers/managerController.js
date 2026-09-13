@@ -2,11 +2,10 @@ import mongoose from "mongoose";
 import Employee from "../models/Employee.js";
 import Role from "../models/Role.js";
 import { failed, success } from "../utils/response.js";
+import Leave from "../models/leave.js";
 
 export const getManagerController = async(req, res)=>{
     const {departmentId} = req.params;
-    
-    
     
     if(!departmentId) return failed(res, 400, "Bad request department not found");
 
@@ -22,10 +21,6 @@ export const getManagerController = async(req, res)=>{
             }
         }
     ])
-    // const manager = await Employee.find({
-    //     department: departmentId,
-    //     role: role[0]._id
-    // })
 
     return success(res, 200, "", manager);
 }
@@ -69,4 +64,38 @@ export const getTeamSummary = async(req, res)=>{
     }
 }
 
+export const getLeaveRequest = async (req, res) => {
+  try {
+    const managerId = req.user._id;
 
+    // Get employees under this manager
+    const team = await Employee.find(
+      { manager: managerId },
+      { _id: 1 }
+    );
+
+    const teamId = team.map((employee) => employee._id);
+
+    // Get leave requests of team members
+    const leaveList = await Leave.find({
+      employeeId: { $in: teamId },
+    }).populate([
+        {
+        path: 'employeeId', 
+        select: 'firstName lastName designation',
+        // populate: {
+        //     path:  'designation',
+        //     select: 'name'
+        // }
+    },
+    {
+        path: 'leaveTypeId', select: 'name'
+    }
+]);
+
+    return success(res, 200, null, leaveList);
+  } catch (error) {
+    console.error(error);
+    return failed(res, 500, "Something went wrong");
+  }
+};

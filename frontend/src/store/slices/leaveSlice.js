@@ -4,8 +4,8 @@ import { enqueueSnackbar } from "notistack";
 
 const initialState = {
     leaveLoader: false,
-    leave: null,
-    leaveType: null
+    leave: [],
+    leaveType: [],
 }
 const leaveSlice = createSlice({
     name: 'leave',
