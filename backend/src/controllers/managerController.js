@@ -42,3 +42,31 @@ export const getMyTeam = async(req, res)=>{
         return failed(res, 500, "Something went wrong");
     }
 }
+
+export const getTeamSummary = async(req, res)=>{
+     try {
+        const employeeId = req.user._id;
+
+        const team = await Employee.find({manager: new mongoose.Types.ObjectId(employeeId)});
+        const size = team.length;
+        const active = team.filter((p)=>p.status==="ACTIVE").length;
+
+        const departmentCount = new Set(
+            team.map((employee)=>employee.department.toString())
+        ).size;
+
+        // console.log("team.map((employee)=>employee.department)", team.map((employee)=>employee.department))
+        const designationCount = new Set(
+            team.map((employee)=>employee.designation.toString())
+        ).size;
+
+        const summary = {size, active, departmentCount, designationCount }
+        return success(res, 200, null, summary);
+        
+    } catch (error) {
+        console.error(error);
+        return failed(res, 500, "Something went wrong");
+    }
+}
+
+

@@ -17,7 +17,7 @@ import {
 } from "@tabler/icons-react";
 import CustomTale from "../../../components/CustomTale";
 import { useDispatch, useSelector } from "react-redux";
-import { departmentManagerSelector, getMyTeam } from "../../../../store/slices/managerSlice";
+import { departmentManagerSelector, getMyTeam, getTeamSummary } from "../../../../store/slices/managerSlice";
 
 // import CustomTale from "../../components/CustomTale";
 
@@ -27,13 +27,14 @@ const MyTeam = () => {
     const [page, setPage] = useState(1);
 
     const [totalPages, setTotalPages] = useState(1);
-    const {team} = useSelector(departmentManagerSelector);
-        
-        const dispatch = useDispatch();
+    const { team, summary } = useSelector(departmentManagerSelector);
 
-        useEffect(()=>{
-            dispatch(getMyTeam());
-        },[])
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getMyTeam());
+        dispatch(getTeamSummary());
+    }, [])
 
     const employees = [
         {
@@ -148,7 +149,7 @@ const MyTeam = () => {
                     size="small"
                     color={
                         row.status ===
-                        "ACTIVE"
+                            "ACTIVE"
                             ? "success"
                             : "default"
                     }
@@ -216,7 +217,7 @@ const MyTeam = () => {
             ====================================== */}
 
             <TeamQuickSummary
-                employees={employees}
+                teamSummary={summary}
             />
 
             {/* =====================================
@@ -313,45 +314,25 @@ const MyTeam = () => {
    TEAM QUICK SUMMARY
 ========================================= */
 
-const TeamQuickSummary = ({
-    employees
-}) => {
+const TeamQuickSummary = ({teamSummary }) => {
 
-    const active = employees.filter(
-        employee =>
-            employee.status === "ACTIVE"
-    ).length;
-
-    const departments = new Set(
-        employees.map(
-            employee =>
-                employee.department
-        )
-    ).size;
-
-    const designations = new Set(
-        employees.map(
-            employee =>
-                employee.designation
-        )
-    ).size;
-
+  
     const summary = [
         {
             title: "Team Members",
-            value: employees.length
+            value: teamSummary?.size
         },
         {
             title: "Active",
-            value: active
+            value: teamSummary?.active
         },
         {
             title: "Departments",
-            value: departments
+            value: teamSummary?.departmentCount,
         },
         {
             title: "Designations",
-            value: designations
+            value: teamSummary?.designationCount
         }
     ];
 
